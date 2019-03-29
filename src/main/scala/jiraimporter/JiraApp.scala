@@ -5,8 +5,11 @@ import akka.stream.ActorMaterializer
 import cats.data.EitherT
 import cats.instances.future.catsStdInstancesForFuture
 import com.sksamuel.elastic4s.ElasticsearchClientUri
-import com.sksamuel.elastic4s.http.ElasticDsl.{search, _}
-import com.sksamuel.elastic4s.http.{HttpClient, get => _, search => _}
+import scribe.writer.FileWriter
+import scribe.writer.file.LogPath
+//import com.sksamuel.elastic4s.http.ElasticDsl._
+//import com.sksamuel.elastic4s.ElasticApi._
+import com.sksamuel.elastic4s.http.{HttpClient, RequestFailure, RequestSuccess, SourceAsContentBuilder, get => _, search => _}
 import com.typesafe.config.{Config, ConfigFactory}
 import io.circe.Json
 import io.circe.optics.JsonPath.root
@@ -16,6 +19,12 @@ import play.api.libs.ws._
 import play.api.libs.ws.ahc._
 import scribe._
 import scribe.format._
+import com.sksamuel.elastic4s.http.ElasticDsl._
+import io.circe._
+import io.circe.generic.auto._
+import io.circe.parser._
+import io.circe.syntax._
+import io.circe.generic.extras.Configuration
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
@@ -27,6 +36,7 @@ object JiraApp extends Logging {
   val config: Config = ConfigFactory.load()
   implicit val materializer: ActorMaterializer = ActorMaterializer()
   val wsClient = StandaloneAhcWSClient()
+  implicit val configuration: Configuration = Configuration.default.withDefaults
 
   private val esIndex = config.getString("dhiNidhi.index")
   private val elasticServer = config.getString("dhiNidhi.elasticServer")
@@ -44,23 +54,37 @@ object JiraApp extends Logging {
 
     val processJiraImport = for {
       bglist <- processJiraRequest
-      esList <- runEs
+      esList <- EitherT(insertIntoEs(bglist))
     } yield esList
 
     processJiraImport.value.onComplete(result => {
+      logger.debug("Inserted " + result + " documents ")
       shutdown(system, wsClient)
     })
   }
 
 
-  def init:Unit = {
-    val myFormatter: Formatter = formatter"[$threadName] $positionAbbreviated - $message$newLine"
-    //    Logger.root.clearHandlers().withHandler(formatter = myFormatter).replace()
-    //    Logger("com.sksamuel.elastic4s").clearHandlers().clearModifiers().withHandler(minimumLevel = Some(Level.Debug)).replace()
+  def insertIntoEs(bgbugs: List[Bgbug]) = {
+  logger.info("Inserting into ESIndex " + esIndex)
+    val insertOps = bgbugs.map({ (bgbug) => indexInto(esIndex).doc(bgbug.asJson.noSpaces).withId(bgbug.`Defect ID`.toString) } )
+//    val insertOps = bgbugs.map({ (bgbug) => update(bgbug.`Defect ID`.toString).in("jiratest1" / "data").docAsUpsert(bgbug.asJson.noSpaces) } ).take(2)
+    client.execute(bulk(insertOps: _*)).map {
+      case Left(err) => Left[Error, String](Error.EsServerNoReachable("Error inserting document :" + elasticServer + "Message :" + err))
+      case Right(i) => Right[Error, String](i.result.items.toString())
+    }
+
+  }
+
+  def init: Unit = {
+//    val myFormatter: Formatter = formatter"[$threadName] $positionAbbreviated - $message$newLine"
+//    Logger.root.withHandler(formatter = myFormatter).replace()
+//    Logger("com.sksamuel.elastic4s").clearHandlers().clearModifiers().withHandler(minimumLevel = Some(Level.Debug)).replace()
+//    Logger().clearHandlers().clearModifiers().withHandler(minimumLevel = Some(Level.Debug)).replace()
+    Logger().clearHandlers().clearModifiers().withHandler(minimumLevel = Some(Level.Debug)).withHandler(writer = FileWriter().path(LogPath.daily())).replace()
     logger.info("Starting ..")
   }
 
-  def runEs:EitherT[Future,Error,SearchResult] = {
+  def runEs: EitherT[Future, Error, SearchResult] = {
     val esAttempt = for {
       esResponse <- EitherT(processEsRequests)
     } yield esResponse
@@ -77,7 +101,7 @@ object JiraApp extends Logging {
   }
 
 
-  def processEsRequests : Future[Either[Error,SearchResult]] = {
+  def processEsRequests: Future[Either[Error, SearchResult]] = {
     import BgbugReader.BgbugReader
     val limit = 2
 
@@ -108,8 +132,8 @@ object JiraApp extends Logging {
       val convertedCount = result.map(l => l.map({ li => li.size }))
 
       logger.info("Total bgbugs converted " + convertedCount)
+      logger.debug("Total bgbugs converted " + result)
 
-      //      shutdown(system, wsClient)
     })
     attempt
 
@@ -119,7 +143,11 @@ object JiraApp extends Logging {
     val request: StandaloneWSRequest = wsClient.url(jiraBaseUrl + "/search").withAuth(jiraUserName, jiraPassword, WSAuthScheme.BASIC)
     val complexRequest: StandaloneWSRequest =
       request.addHttpHeaders("Accept" -> "application/json")
-        .addQueryStringParameters("jql" -> "project = AEROGEAR AND updated >= -1d")
+        .addHttpHeaders("Accept-Encoding" -> "gzip,deflate")
+        .addQueryStringParameters("jql" -> "project = FCS AND updated >= -1w")
+        .addQueryStringParameters("startAt" -> "0")
+        .addQueryStringParameters("maxResults" -> "500")
+//      .addQueryStringParameters(startAt=3&maxResults=5")
         .withRequestFilter(AhcCurlRequestLogger())
         .withRequestTimeout(90000.millis)
 
@@ -132,7 +160,7 @@ object JiraApp extends Logging {
         logger.info("Unknown error resp.status " + resp.status)
         Left(Error.JiraServerNoReachable("jiraBaseUrl :" + jiraBaseUrl + " Response : " + resp.body))
 
-    }) //.recover { case t => Left(Error.JiraTimeOut("Failed to reach jira server :" + t.getMessage)) }
+    })
   }
 
 
@@ -149,19 +177,21 @@ object JiraApp extends Logging {
     val _total = root.total.int
     val _issues = root.issues.each.json
     val totalIssuesFound = _total.getOption(jiraJson)
-    //    import BGBugDecoder.bgbugdecoder
     logger.info("Total issues found " + totalIssuesFound.getOrElse(0))
     Future {
-      val bgbugs = _issues.getAll(jiraJson).map(x => x.as[Bgbug]) collect { case Right(f) => f }
-      if (bgbugs.size <= 0) {
-        Left[Error, List[Bgbug]](Error.JiraIssuesParsing("Zero issues converted"))
-      } else if (bgbugs.size < totalIssuesFound.getOrElse(0)) {
-        val bgsize = bgbugs.size
+      val decodedBGBugs = _issues.getAll(jiraJson).map(x => x.as[Bgbug])
+      val validBgbugs = decodedBGBugs collect { case Right(f) => f }
+      val invalidBgBugs = decodedBGBugs collect { case Left(f) => f }
+      if (validBgbugs.size <= 0) {
+        Left[Error, List[Bgbug]](Error.JiraIssuesParsing("Zero issues converted " + _issues.getAll(jiraJson).map(x => x.as[Bgbug])))
+      } else if (validBgbugs.size < totalIssuesFound.getOrElse(0)) {
+        val bgsize = validBgbugs.size
         logger.warn(s"Total converted issue $bgsize is less than TotalIssuesFound $totalIssuesFound")
-        Right[Error, List[Bgbug]](bgbugs)
+        logger.warn(s"Decoding failed issues \n" + invalidBgBugs)
+        Right[Error, List[Bgbug]](validBgbugs)
       }
       else {
-        Right[Error, List[Bgbug]](bgbugs)
+        Right[Error, List[Bgbug]](validBgbugs)
       }
     }
 
