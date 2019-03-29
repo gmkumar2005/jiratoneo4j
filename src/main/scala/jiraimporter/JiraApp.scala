@@ -144,7 +144,7 @@ object JiraApp extends Logging {
     val complexRequest: StandaloneWSRequest =
       request.addHttpHeaders("Accept" -> "application/json")
         .addHttpHeaders("Accept-Encoding" -> "gzip,deflate")
-        .addQueryStringParameters("jql" -> "project = FCS AND updated >= -1w")
+        .addQueryStringParameters("jql" -> "project = FCS AND updated >= -1d")
         .addQueryStringParameters("startAt" -> "0")
         .addQueryStringParameters("maxResults" -> "500")
 //      .addQueryStringParameters(startAt=3&maxResults=5")
