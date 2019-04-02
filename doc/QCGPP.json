@@ -1,17 +1,242 @@
-HTTP/1.1 200 
-Server: nginx/1.14.0
-Date: Fri, 29 Mar 2019 06:36:28 GMT
-Content-Type: application/json;charset=UTF-8
-Transfer-Encoding: chunked
-Connection: keep-alive
-X-AREQUESTID: 396x45164x1
-X-ASEN: SEN-L11448916
-Set-Cookie: JSESSIONID=1545B275649CCF633A1901381651F5E8;path=/jira;HttpOnly
-X-Seraph-LoginReason: OK
-Set-Cookie: atlassian.xsrf.token=BI9Z-KPD0-C9WX-8X8N|a51fb08103706b4cadc03a65d8df55d8b2961b5b|lin;path=/jira
-X-ASESSIONID: rws35a
-X-AUSERNAME: kiran.kumar
-Cache-Control: no-cache, no-store, no-transform
-X-Content-Type-Options: nosniff
-
-{"expand":"names,schema","startAt":0,"maxResults":1,"total":95594,"issues":[{"expand":"operations,versionedRepresentations,editmeta,changelog,renderedFields","id":"2635935","self":"http://10.199.0.32/jira/rest/api/latest/issue/2635935","key":"QCGPP-95607","fields":{"customfield_19200":null,"customfield_19201":null,"customfield_13063":null,"customfield_13064":null,"customfield_13066":null,"customfield_13101":null,"fixVersions":[],"customfield_13068":null,"customfield_15800":null,"customfield_13500":null,"customfield_10111":null,"customfield_19204":null,"customfield_11200":null,"customfield_19600":null,"resolution":null,"customfield_19205":null,"customfield_13502":null,"customfield_19206":null,"customfield_13501":null,"customfield_17701":null,"customfield_19207":null,"customfield_10104":null,"customfield_12800":null,"customfield_10900":[],"customfield_18101":null,"lastViewed":null,"customfield_18102":null,"customfield_18103":null,"customfield_18900":null,"customfield_18901":null,"priority":null,"labels":[],"customfield_10103":"9997","customfield_17805":null,"aggregatetimeoriginalestimate":null,"timeestimate":null,"versions":[],"issuelinks":[],"assignee":{"self":"http://10.199.0.32/jira/rest/api/2/user?username=jimmy.rodriguez","name":"jimmy.rodriguez","key":"jimmy.rodriguez","emailAddress":"jimmy.rodriguez@finastra.com","avatarUrls":{"48x48":"http://10.199.0.32/jira/secure/useravatar?avatarId=10122","24x24":"http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122","16x16":"http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122","32x32":"http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"},"displayName":"Jimmy Rodriguez","active":true,"timeZone":"Europe/London"},"status":{"self":"http://10.199.0.32/jira/rest/api/2/status/1","description":"This issue has been created and is open for work","iconUrl":"http://10.199.0.32/jira/images/icons/statuses/open.png","name":"Open","id":"1","statusCategory":{"self":"http://10.199.0.32/jira/rest/api/2/statuscategory/2","id":2,"key":"new","colorName":"blue-gray","name":"To Do"}},"customfield_19300":null,"components":[],"customfield_17000":null,"customfield_17400":null,"customfield_17803":null,"customfield_17802":null,"customfield_19700":null,"customfield_17801":null,"customfield_13600":null,"customfield_17800":null,"customfield_10600":null,"aggregatetimeestimate":null,"customfield_20002":null,"customfield_18200":null,"customfield_20000":null,"creator":{"self":"http://10.199.0.32/jira/rest/api/2/user?username=jimmy.rodriguez","name":"jimmy.rodriguez","key":"jimmy.rodriguez","emailAddress":"jimmy.rodriguez@finastra.com","avatarUrls":{"48x48":"http://10.199.0.32/jira/secure/useravatar?avatarId=10122","24x24":"http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122","16x16":"http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122","32x32":"http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"},"displayName":"Jimmy Rodriguez","active":true,"timeZone":"Europe/London"},"customfield_20001":null,"subtasks":[],"customfield_14400":null,"reporter":{"self":"http://10.199.0.32/jira/rest/api/2/user?username=jimmy.rodriguez","name":"jimmy.rodriguez","key":"jimmy.rodriguez","emailAddress":"jimmy.rodriguez@finastra.com","avatarUrls":{"48x48":"http://10.199.0.32/jira/secure/useravatar?avatarId=10122","24x24":"http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122","16x16":"http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122","32x32":"http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"},"displayName":"Jimmy Rodriguez","active":true,"timeZone":"Europe/London"},"aggregateprogress":{"progress":0,"total":0},"customfield_11405":null,"progress":{"progress":0,"total":0},"votes":{"self":"http://10.199.0.32/jira/rest/api/2/issue/QCGPP-95607/votes","votes":0,"hasVoted":false},"customfield_19002":null,"issuetype":{"self":"http://10.199.0.32/jira/rest/api/2/issuetype/15","id":"15","description":"Issue type to track high level deliverables (elements or functions) that will constitute a specific release. This will be split into Epics and Stories for delivery","iconUrl":"http://10.199.0.32/jira/secure/viewavatar?size=xsmall&avatarId=40306&avatarType=issuetype","name":"Requirement","subtask":false,"avatarId":40306},"customfield_19003":null,"customfield_19400":null,"customfield_17101":null,"customfield_17100":null,"customfield_19000":null,"timespent":null,"customfield_19001":null,"project":{"self":"http://10.199.0.32/jira/rest/api/2/project/32500","id":"32500","key":"QCGPP","name":"QCGPP12","avatarUrls":{"48x48":"http://10.199.0.32/jira/secure/projectavatar?avatarId=47003","24x24":"http://10.199.0.32/jira/secure/projectavatar?size=small&avatarId=47003","16x16":"http://10.199.0.32/jira/secure/projectavatar?size=xsmall&avatarId=47003","32x32":"http://10.199.0.32/jira/secure/projectavatar?size=medium&avatarId=47003"}},"customfield_17500":"1|s1qugw:","customfield_11002":null,"customfield_13302":null,"aggregatetimespent":null,"customfield_11003":null,"customfield_19403":null,"customfield_13700":null,"customfield_11004":null,"customfield_19800":null,"customfield_12205":null,"customfield_10700":null,"resolutiondate":null,"workratio":-1,"watches":{"self":"http://10.199.0.32/jira/rest/api/2/issue/QCGPP-95607/watchers","watchCount":0,"isWatching":false},"customfield_18300":null,"customfield_18301":null,"created":"2013-03-21T00:00:00.000+0000","customfield_16400":null,"customfield_12200":null,"customfield_12202":null,"customfield_12201":null,"customfield_10300":null,"customfield_12204":null,"customfield_18700":null,"customfield_12203":null,"customfield_11502":null,"customfield_13406":null,"updated":"2013-03-21T16:27:53.000+0000","customfield_13081":null,"customfield_13082":null,"customfield_19500":null,"customfield_17200":null,"customfield_19100":null,"timeoriginalestimate":null,"customfield_13001":null,"customfield_15301":null,"description":"***********************Customer Requirement***********************\nMultiple offices handling for EOD/SOD\r\nOnce the EOD/SOD is complete for a particular office the payment should be opened in on-line mode (normal mode), as per the GPP user access control.\r\nUsers who have logged in during EOD/SOD mode should not be requested to re-login (or forcibly logged out) once EOD/SOD has finished. They should be able to process messages, edit profiles etc (as per the GPP access control) without re-login into system.\n***********************High Level Solution***********************\nFunctionality present in GPP\n***********************Solution ID***********************\nCore GPP functionality\n***********************Customer Requirement Name***********************\nFR_SED_SP_CRUSD_003_[1]\n","customfield_13000":null,"customfield_17600":null,"customfield_11100":null,"customfield_15701":"Not started","customfield_19501":null,"customfield_13400":null,"customfield_15702":null,"customfield_13403":null,"customfield_15700":null,"customfield_19900":null,"customfield_10129":null,"customfield_10802":null,"summary":"FR_SED_SP_CRUSD_003_[1]","customfield_18400":null,"customfield_16100":null,"customfield_18000":null,"customfield_18801":null,"customfield_10120":null,"customfield_10121":null,"customfield_14200":null,"customfield_10002":null,"customfield_10003":null,"customfield_10400":null,"customfield_10004":"9223372036854775807","customfield_11600":null,"customfield_11603":"0.0","duedate":null}}]}
+{
+  "expand": "names,schema",
+  "startAt": 0,
+  "maxResults": 1,
+  "total": 95594,
+  "issues": [
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "2635935",
+      "self": "http://10.199.0.32/jira/rest/api/latest/issue/2635935",
+      "key": "QCGPP-95607",
+      "fields": {
+        "customfield_19200": null,
+        "customfield_19201": null,
+        "customfield_13063": null,
+        "customfield_13064": null,
+        "customfield_13066": null,
+        "customfield_13101": null,
+        "fixVersions": [],
+        "customfield_13068": null,
+        "customfield_15800": null,
+        "customfield_13500": null,
+        "customfield_10111": null,
+        "customfield_19204": null,
+        "customfield_11200": null,
+        "customfield_19600": null,
+        "resolution": null,
+        "customfield_19205": null,
+        "customfield_13502": null,
+        "customfield_19206": null,
+        "customfield_13501": null,
+        "customfield_17701": null,
+        "customfield_19207": null,
+        "customfield_10104": null,
+        "customfield_12800": null,
+        "customfield_10900": [],
+        "customfield_18101": null,
+        "lastViewed": null,
+        "customfield_18102": null,
+        "customfield_18103": null,
+        "customfield_18900": null,
+        "customfield_18901": null,
+        "priority": null,
+        "labels": [],
+        "customfield_10103": "9997",
+        "customfield_17805": null,
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": {
+          "self": "http://10.199.0.32/jira/rest/api/2/user?username=jimmy.rodriguez",
+          "name": "jimmy.rodriguez",
+          "key": "jimmy.rodriguez",
+          "emailAddress": "jimmy.rodriguez@finastra.com",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/useravatar?avatarId=10122",
+            "24x24": "http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122",
+            "16x16": "http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122",
+            "32x32": "http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"
+          },
+          "displayName": "Jimmy Rodriguez",
+          "active": true,
+          "timeZone": "Europe/London"
+        },
+        "status": {
+          "self": "http://10.199.0.32/jira/rest/api/2/status/1",
+          "description": "This issue has been created and is open for work",
+          "iconUrl": "http://10.199.0.32/jira/images/icons/statuses/open.png",
+          "name": "Open",
+          "id": "1",
+          "statusCategory": {
+            "self": "http://10.199.0.32/jira/rest/api/2/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "customfield_19300": null,
+        "components": [],
+        "customfield_17000": null,
+        "customfield_17400": null,
+        "customfield_17803": null,
+        "customfield_17802": null,
+        "customfield_19700": null,
+        "customfield_17801": null,
+        "customfield_13600": null,
+        "customfield_17800": null,
+        "customfield_10600": null,
+        "aggregatetimeestimate": null,
+        "customfield_20002": null,
+        "customfield_18200": null,
+        "customfield_20000": null,
+        "creator": {
+          "self": "http://10.199.0.32/jira/rest/api/2/user?username=jimmy.rodriguez",
+          "name": "jimmy.rodriguez",
+          "key": "jimmy.rodriguez",
+          "emailAddress": "jimmy.rodriguez@finastra.com",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/useravatar?avatarId=10122",
+            "24x24": "http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122",
+            "16x16": "http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122",
+            "32x32": "http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"
+          },
+          "displayName": "Jimmy Rodriguez",
+          "active": true,
+          "timeZone": "Europe/London"
+        },
+        "customfield_20001": null,
+        "subtasks": [],
+        "customfield_14400": null,
+        "reporter": {
+          "self": "http://10.199.0.32/jira/rest/api/2/user?username=jimmy.rodriguez",
+          "name": "jimmy.rodriguez",
+          "key": "jimmy.rodriguez",
+          "emailAddress": "jimmy.rodriguez@finastra.com",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/useravatar?avatarId=10122",
+            "24x24": "http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122",
+            "16x16": "http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122",
+            "32x32": "http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"
+          },
+          "displayName": "Jimmy Rodriguez",
+          "active": true,
+          "timeZone": "Europe/London"
+        },
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "customfield_11405": null,
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "votes": {
+          "self": "http://10.199.0.32/jira/rest/api/2/issue/QCGPP-95607/votes",
+          "votes": 0,
+          "hasVoted": false
+        },
+        "customfield_19002": null,
+        "issuetype": {
+          "self": "http://10.199.0.32/jira/rest/api/2/issuetype/15",
+          "id": "15",
+          "description": "Issue type to track high level deliverables (elements or functions) that will constitute a specific release. This will be split into Epics and Stories for delivery",
+          "iconUrl": "http://10.199.0.32/jira/secure/viewavatar?size=xsmall&avatarId=40306&avatarType=issuetype",
+          "name": "Requirement",
+          "subtask": false,
+          "avatarId": 40306
+        },
+        "customfield_19003": null,
+        "customfield_19400": null,
+        "customfield_17101": null,
+        "customfield_17100": null,
+        "customfield_19000": null,
+        "timespent": null,
+        "customfield_19001": null,
+        "project": {
+          "self": "http://10.199.0.32/jira/rest/api/2/project/32500",
+          "id": "32500",
+          "key": "QCGPP",
+          "name": "QCGPP12",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/projectavatar?avatarId=47003",
+            "24x24": "http://10.199.0.32/jira/secure/projectavatar?size=small&avatarId=47003",
+            "16x16": "http://10.199.0.32/jira/secure/projectavatar?size=xsmall&avatarId=47003",
+            "32x32": "http://10.199.0.32/jira/secure/projectavatar?size=medium&avatarId=47003"
+          }
+        },
+        "customfield_17500": "1|s1qugw:",
+        "customfield_11002": null,
+        "customfield_13302": null,
+        "aggregatetimespent": null,
+        "customfield_11003": null,
+        "customfield_19403": null,
+        "customfield_13700": null,
+        "customfield_11004": null,
+        "customfield_19800": null,
+        "customfield_12205": null,
+        "customfield_10700": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "watches": {
+          "self": "http://10.199.0.32/jira/rest/api/2/issue/QCGPP-95607/watchers",
+          "watchCount": 0,
+          "isWatching": false
+        },
+        "customfield_18300": null,
+        "customfield_18301": null,
+        "created": "2013-03-21T00:00:00.000+0000",
+        "customfield_16400": null,
+        "customfield_12200": null,
+        "customfield_12202": null,
+        "customfield_12201": null,
+        "customfield_10300": null,
+        "customfield_12204": null,
+        "customfield_18700": null,
+        "customfield_12203": null,
+        "customfield_11502": null,
+        "customfield_13406": null,
+        "updated": "2013-03-21T16:27:53.000+0000",
+        "customfield_13081": null,
+        "customfield_13082": null,
+        "customfield_19500": null,
+        "customfield_17200": null,
+        "customfield_19100": null,
+        "timeoriginalestimate": null,
+        "customfield_13001": null,
+        "customfield_15301": null,
+        "description": "***********************Customer Requirement***********************\nMultiple offices handling for EOD/SOD\r\nOnce the EOD/SOD is complete for a particular office the payment should be opened in on-line mode (normal mode), as per the GPP user access control.\r\nUsers who have logged in during EOD/SOD mode should not be requested to re-login (or forcibly logged out) once EOD/SOD has finished. They should be able to process messages, edit profiles etc (as per the GPP access control) without re-login into system.\n***********************High Level Solution***********************\nFunctionality present in GPP\n***********************Solution ID***********************\nCore GPP functionality\n***********************Customer Requirement Name***********************\nFR_SED_SP_CRUSD_003_[1]\n",
+        "customfield_13000": null,
+        "customfield_17600": null,
+        "customfield_11100": null,
+        "customfield_15701": "Not started",
+        "customfield_19501": null,
+        "customfield_13400": null,
+        "customfield_15702": null,
+        "customfield_13403": null,
+        "customfield_15700": null,
+        "customfield_19900": null,
+        "customfield_10129": null,
+        "customfield_10802": null,
+        "summary": "FR_SED_SP_CRUSD_003_[1]",
+        "customfield_18400": null,
+        "customfield_16100": null,
+        "customfield_18000": null,
+        "customfield_18801": null,
+        "customfield_10120": null,
+        "customfield_10121": null,
+        "customfield_14200": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10400": null,
+        "customfield_10004": "9223372036854775807",
+        "customfield_11600": null,
+        "customfield_11603": "0.0",
+        "duedate": null
+      }
+    }
+  ]
+}

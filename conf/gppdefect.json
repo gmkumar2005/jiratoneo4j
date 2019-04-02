@@ -1,0 +1,728 @@
+{
+  "expand": "names,schema",
+  "startAt": 0,
+  "maxResults": 1,
+  "total": 61063,
+  "issues": [
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "2604400",
+      "self": "http://10.199.0.32/jira/rest/api/latest/issue/2604400",
+      "key": "QCGPP-64171",
+      "fields": {
+        "customfield_19200": null,
+        "customfield_19201": null,
+        "customfield_17300": null,
+        "customfield_13063": null,
+        "customfield_13062": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/84760",
+          "value": "In Progress",
+          "id": "84760"
+        },
+        "customfield_13065": [
+          {
+            "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/84799",
+            "value": "High Value core application",
+            "id": "84799"
+          }
+        ],
+        "customfield_13064": null,
+        "customfield_13100": null,
+        "customfield_13067": null,
+        "customfield_13066": null,
+        "customfield_13069": null,
+        "customfield_13101": null,
+        "fixVersions": [
+          {
+            "self": "http://10.199.0.32/jira/rest/api/2/version/186322",
+            "id": "186322",
+            "description": "",
+            "name": "Next",
+            "archived": false,
+            "released": false
+          }
+        ],
+        "customfield_13068": null,
+        "customfield_10110": null,
+        "customfield_19204": null,
+        "customfield_11200": null,
+        "customfield_19600": null,
+        "customfield_15800": null,
+        "customfield_13500": null,
+        "customfield_10111": {
+          "self": "http://10.199.0.32/jira/rest/api/2/version/186351",
+          "id": "186351",
+          "description": "",
+          "name": "Un_Defined",
+          "archived": false,
+          "released": false
+        },
+        "resolution": null,
+        "customfield_19205": null,
+        "customfield_19206": null,
+        "customfield_13502": [
+          {
+            "self": "http://10.199.0.32/jira/rest/api/2/user?username=vijay.agrawal",
+            "name": "vijay.agrawal",
+            "key": "vijay.agrawal",
+            "emailAddress": "vijay.agrawal@finastra.com",
+            "avatarUrls": {
+              "48x48": "http://10.199.0.32/jira/secure/useravatar?avatarId=10122",
+              "24x24": "http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122",
+              "16x16": "http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122",
+              "32x32": "http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"
+            },
+            "displayName": "vijay agrawal",
+            "active": true,
+            "timeZone": "Europe/London"
+          }
+        ],
+        "customfield_17701": null,
+        "customfield_19207": null,
+        "customfield_13501": null,
+        "customfield_12800": null,
+        "customfield_10104": null,
+        "customfield_10107": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/10100",
+          "value": "Development",
+          "id": "10100"
+        },
+        "customfield_10900": [],
+        "customfield_18101": null,
+        "lastViewed": null,
+        "customfield_18102": null,
+        "customfield_18103": null,
+        "customfield_14300": null,
+        "customfield_18900": null,
+        "customfield_18901": null,
+        "priority": {
+          "self": "http://10.199.0.32/jira/rest/api/2/priority/3",
+          "iconUrl": "http://10.199.0.32/jira/images/icons/priorities/major.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_14700": null,
+        "customfield_10102": null,
+        "labels": [
+          "None"
+        ],
+        "customfield_10103": "178827",
+        "customfield_17805": null,
+        "customfield_15901": null,
+        "aggregatetimeoriginalestimate": 0,
+        "timeestimate": 0,
+        "customfield_11703": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/84822",
+          "value": "Project",
+          "id": "84822"
+        },
+        "versions": [],
+        "issuelinks": [],
+        "assignee": {
+          "self": "http://10.199.0.32/jira/rest/api/2/user?username=vijay.agrawal",
+          "name": "vijay.agrawal",
+          "key": "vijay.agrawal",
+          "emailAddress": "vijay.agrawal@finastra.com",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/useravatar?avatarId=10122",
+            "24x24": "http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122",
+            "16x16": "http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122",
+            "32x32": "http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"
+          },
+          "displayName": "vijay agrawal",
+          "active": true,
+          "timeZone": "Europe/London"
+        },
+        "status": {
+          "self": "http://10.199.0.32/jira/rest/api/2/status/3",
+          "description": "This issue has been assigned for work, and is currently being addressed.",
+          "iconUrl": "http://10.199.0.32/jira/images/icons/statuses/inprogress.png",
+          "name": "In Progress",
+          "id": "3",
+          "statusCategory": {
+            "self": "http://10.199.0.32/jira/rest/api/2/statuscategory/4",
+            "id": 4,
+            "key": "indeterminate",
+            "colorName": "yellow",
+            "name": "In Progress"
+          }
+        },
+        "customfield_19300": null,
+        "components": [],
+        "customfield_17400": null,
+        "customfield_17803": null,
+        "customfield_17802": null,
+        "customfield_19700": null,
+        "customfield_15900": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/49321",
+          "value": "New Feature",
+          "id": "49321"
+        },
+        "customfield_17801": "Next",
+        "customfield_17800": [
+          "Next"
+        ],
+        "customfield_13600": null,
+        "customfield_10203": null,
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_12900": null,
+        "aggregatetimeestimate": 0,
+        "customfield_20002": null,
+        "customfield_18200": null,
+        "customfield_20000": null,
+        "creator": {
+          "self": "http://10.199.0.32/jira/rest/api/2/user?username=ankit.babbar",
+          "name": "ankit.babbar",
+          "key": "ankit.babbar",
+          "emailAddress": "ankit.babbar@finastra.com",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/useravatar?avatarId=10122",
+            "24x24": "http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122",
+            "16x16": "http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122",
+            "32x32": "http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"
+          },
+          "displayName": "ankit babbar",
+          "active": true,
+          "timeZone": "Europe/London"
+        },
+        "customfield_20001": null,
+        "subtasks": [],
+        "reporter": {
+          "self": "http://10.199.0.32/jira/rest/api/2/user?username=ankit.babbar",
+          "name": "ankit.babbar",
+          "key": "ankit.babbar",
+          "emailAddress": "ankit.babbar@finastra.com",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/useravatar?avatarId=10122",
+            "24x24": "http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122",
+            "16x16": "http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122",
+            "32x32": "http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"
+          },
+          "displayName": "ankit babbar",
+          "active": true,
+          "timeZone": "Europe/London"
+        },
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "customfield_18600": null,
+        "customfield_10200": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/13103",
+          "value": "3 - Medium",
+          "id": "13103"
+        },
+        "customfield_14800": "BdB Sched",
+        "customfield_10201": null,
+        "customfield_10202": null,
+        "customfield_11801": null,
+        "customfield_11405": null,
+        "customfield_11800": null,
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "votes": {
+          "self": "http://10.199.0.32/jira/rest/api/2/issue/QCGPP-64171/votes",
+          "votes": 0,
+          "hasVoted": false
+        },
+        "customfield_19002": null,
+        "issuetype": {
+          "self": "http://10.199.0.32/jira/rest/api/2/issuetype/6",
+          "id": "6",
+          "description": "Issue type to keep track of defects/bugs reported on Misys Products. Is segregated into \"External Customer\" Defects and Internal defects.",
+          "iconUrl": "http://10.199.0.32/jira/images/site/defect.gif",
+          "name": "Defect",
+          "subtask": false
+        },
+        "customfield_19003": null,
+        "customfield_19400": null,
+        "customfield_19000": null,
+        "timespent": null,
+        "customfield_19001": null,
+        "project": {
+          "self": "http://10.199.0.32/jira/rest/api/2/project/32500",
+          "id": "32500",
+          "key": "QCGPP",
+          "name": "QCGPP12",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/projectavatar?avatarId=47003",
+            "24x24": "http://10.199.0.32/jira/secure/projectavatar?size=small&avatarId=47003",
+            "16x16": "http://10.199.0.32/jira/secure/projectavatar?size=xsmall&avatarId=47003",
+            "32x32": "http://10.199.0.32/jira/secure/projectavatar?size=medium&avatarId=47003"
+          }
+        },
+        "customfield_13300": null,
+        "customfield_17500": "1|s1lgeo:",
+        "customfield_13025": null,
+        "customfield_13302": null,
+        "customfield_11002": null,
+        "aggregatetimespent": null,
+        "customfield_11003": null,
+        "customfield_13301": null,
+        "customfield_19403": null,
+        "customfield_11004": null,
+        "customfield_19800": null,
+        "customfield_13700": null,
+        "customfield_15601": null,
+        "customfield_10302": null,
+        "customfield_12205": null,
+        "customfield_10700": null,
+        "customfield_14900": null,
+        "customfield_10703": null,
+        "resolutiondate": null,
+        "workratio": 0,
+        "watches": {
+          "self": "http://10.199.0.32/jira/rest/api/2/issue/QCGPP-64171/watchers",
+          "watchCount": 0,
+          "isWatching": false
+        },
+        "customfield_18300": null,
+        "customfield_18301": null,
+        "customfield_16000": null,
+        "created": "2018-07-18T01:00:00.000+0100",
+        "customfield_12200": null,
+        "customfield_16400": null,
+        "customfield_14100": null,
+        "customfield_12202": null,
+        "customfield_16801": null,
+        "customfield_12201": null,
+        "customfield_16800": null,
+        "customfield_12204": null,
+        "customfield_18700": null,
+        "customfield_10300": null,
+        "customfield_12203": null,
+        "customfield_10301": null,
+        "customfield_13405": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/80936",
+          "value": "Ported",
+          "id": "80936"
+        },
+        "customfield_11502": null,
+        "customfield_13800": null,
+        "customfield_13406": null,
+        "updated": "2019-03-28T09:58:28.000+0000",
+        "customfield_13081": null,
+        "customfield_13080": null,
+        "customfield_13082": null,
+        "customfield_19500": null,
+        "customfield_13085": null,
+        "customfield_19100": null,
+        "timeoriginalestimate": 0,
+        "customfield_13001": [
+          {
+            "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/84686",
+            "value": "4.5.GPP_SP",
+            "id": "84686"
+          }
+        ],
+        "customfield_15301": null,
+        "description": "This Defect is a Retrofit of Defect #176922\rUse the 'Linked Entities' option, to locate and review data of the original defect.",
+        "customfield_13000": null,
+        "customfield_17600": null,
+        "customfield_11100": null,
+        "customfield_15701": "Not started",
+        "customfield_19501": null,
+        "customfield_13400": null,
+        "customfield_15702": null,
+        "customfield_13403": null,
+        "customfield_15700": null,
+        "customfield_19900": null,
+        "customfield_12304": null,
+        "customfield_12700": null,
+        "customfield_10128": null,
+        "customfield_10129": null,
+        "customfield_10802": [
+          {
+            "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/84699",
+            "value": "BdB",
+            "id": "84699"
+          }
+        ],
+        "summary": "Creditor address in F57 is not populated when the below payment is processed. (Retrofit of Defect #176922)",
+        "customfield_13072": null,
+        "customfield_13071": null,
+        "customfield_18400": null,
+        "customfield_13074": null,
+        "customfield_13073": null,
+        "customfield_16100": null,
+        "customfield_13076": null,
+        "customfield_13075": null,
+        "customfield_18000": null,
+        "customfield_13078": null,
+        "customfield_18801": null,
+        "customfield_10120": null,
+        "customfield_10121": null,
+        "customfield_14200": null,
+        "customfield_16901": null,
+        "customfield_16900": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10400": null,
+        "customfield_10004": "9223372036854775807",
+        "customfield_11600": null,
+        "environment": null,
+        "customfield_10117": null,
+        "customfield_11603": "0.0",
+        "customfield_10118": null,
+        "duedate": null
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "2581528",
+      "self": "http://10.199.0.32/jira/rest/api/latest/issue/2581528",
+      "key": "QCGPP-41299",
+      "fields": {
+        "customfield_19200": null,
+        "customfield_19201": null,
+        "customfield_17300": null,
+        "customfield_13063": null,
+        "customfield_13062": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/84770",
+          "value": "Duplicate",
+          "id": "84770"
+        },
+        "customfield_13065": [
+          {
+            "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/84798",
+            "value": "GUI",
+            "id": "84798"
+          }
+        ],
+        "customfield_13064": null,
+        "customfield_13100": null,
+        "customfield_13067": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/89278",
+          "value": "Citi Russia",
+          "id": "89278"
+        },
+        "customfield_13066": null,
+        "customfield_13069": null,
+        "customfield_13101": null,
+        "fixVersions": [
+          {
+            "self": "http://10.199.0.32/jira/rest/api/2/version/186318",
+            "id": "186318",
+            "description": "",
+            "name": "Current",
+            "archived": false,
+            "released": false
+          }
+        ],
+        "customfield_13068": null,
+        "customfield_10110": null,
+        "customfield_19204": null,
+        "customfield_11200": null,
+        "customfield_19600": null,
+        "customfield_15800": null,
+        "customfield_13500": null,
+        "customfield_10111": null,
+        "resolution": {
+          "self": "http://10.199.0.32/jira/rest/api/2/resolution/3",
+          "id": "3",
+          "description": "The problem is a duplicate of an existing issue.",
+          "name": "Duplicate"
+        },
+        "customfield_19205": null,
+        "customfield_19206": null,
+        "customfield_13502": [
+          {
+            "self": "http://10.199.0.32/jira/rest/api/2/user?username=tejal.raut",
+            "name": "tejal.raut",
+            "key": "tejal.raut",
+            "emailAddress": "tejal.raut@finastra.com",
+            "avatarUrls": {
+              "48x48": "http://10.199.0.32/jira/secure/useravatar?avatarId=10122",
+              "24x24": "http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122",
+              "16x16": "http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122",
+              "32x32": "http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"
+            },
+            "displayName": "Tejal Raut",
+            "active": true,
+            "timeZone": "Europe/London"
+          }
+        ],
+        "customfield_17701": null,
+        "customfield_19207": null,
+        "customfield_13501": null,
+        "customfield_12800": null,
+        "customfield_10104": null,
+        "customfield_10107": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/10104",
+          "value": "Quality Assurance",
+          "id": "10104"
+        },
+        "customfield_10900": [],
+        "customfield_18101": null,
+        "lastViewed": "2019-04-02T14:53:23.705+0100",
+        "customfield_18102": null,
+        "customfield_18103": null,
+        "customfield_14300": null,
+        "customfield_18900": null,
+        "customfield_18901": null,
+        "priority": {
+          "self": "http://10.199.0.32/jira/rest/api/2/priority/3",
+          "iconUrl": "http://10.199.0.32/jira/images/icons/priorities/major.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_14700": null,
+        "customfield_10102": null,
+        "labels": [
+          "US"
+        ],
+        "customfield_10103": "193380",
+        "customfield_17805": null,
+        "customfield_15901": null,
+        "aggregatetimeoriginalestimate": 0,
+        "timeestimate": 0,
+        "customfield_11703": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": {
+          "self": "http://10.199.0.32/jira/rest/api/2/user?username=sachin.dubal",
+          "name": "sachin.dubal",
+          "key": "sachin.dubal",
+          "emailAddress": "sachin.dubal@finastra.com",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/useravatar?avatarId=10122",
+            "24x24": "http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122",
+            "16x16": "http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122",
+            "32x32": "http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"
+          },
+          "displayName": "sachin dubal",
+          "active": true,
+          "timeZone": "Europe/London"
+        },
+        "status": {
+          "self": "http://10.199.0.32/jira/rest/api/2/status/6",
+          "description": "The issue is considered finished, the resolution is correct. Issues which are closed can be reopened.",
+          "iconUrl": "http://10.199.0.32/jira/images/icons/statuses/closed.png",
+          "name": "Closed",
+          "id": "6",
+          "statusCategory": {
+            "self": "http://10.199.0.32/jira/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        },
+        "customfield_19300": null,
+        "components": [],
+        "customfield_17400": null,
+        "customfield_17803": null,
+        "customfield_17802": null,
+        "customfield_19700": null,
+        "customfield_15900": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/49319",
+          "value": "Latent",
+          "id": "49319"
+        },
+        "customfield_17801": "Current",
+        "customfield_17800": [
+          "Current"
+        ],
+        "customfield_13600": null,
+        "customfield_10203": null,
+        "customfield_10600": null,
+        "customfield_10601": null,
+        "customfield_12900": null,
+        "aggregatetimeestimate": 0,
+        "customfield_20002": null,
+        "customfield_18200": null,
+        "customfield_20000": null,
+        "creator": null,
+        "customfield_20001": null,
+        "subtasks": [],
+        "reporter": {
+          "self": "http://10.199.0.32/jira/rest/api/2/user?username=pratiksha.pawar",
+          "name": "pratiksha.pawar",
+          "key": "pratiksha.pawar",
+          "emailAddress": "Pratiksha.Pawar@finastra.com",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/useravatar?avatarId=10122",
+            "24x24": "http://10.199.0.32/jira/secure/useravatar?size=small&avatarId=10122",
+            "16x16": "http://10.199.0.32/jira/secure/useravatar?size=xsmall&avatarId=10122",
+            "32x32": "http://10.199.0.32/jira/secure/useravatar?size=medium&avatarId=10122"
+          },
+          "displayName": "Pratiksha Pawar",
+          "active": true,
+          "timeZone": "Europe/London"
+        },
+        "aggregateprogress": {
+          "progress": 0,
+          "total": 0
+        },
+        "customfield_18600": null,
+        "customfield_10200": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/13103",
+          "value": "3 - Medium",
+          "id": "13103"
+        },
+        "customfield_14800": "Citi Russia",
+        "customfield_10201": null,
+        "customfield_10202": null,
+        "customfield_11801": null,
+        "customfield_11405": null,
+        "customfield_11800": null,
+        "progress": {
+          "progress": 0,
+          "total": 0
+        },
+        "votes": {
+          "self": "http://10.199.0.32/jira/rest/api/2/issue/QCGPP-41299/votes",
+          "votes": 0,
+          "hasVoted": false
+        },
+        "customfield_19002": null,
+        "issuetype": {
+          "self": "http://10.199.0.32/jira/rest/api/2/issuetype/6",
+          "id": "6",
+          "description": "Issue type to keep track of defects/bugs reported on Misys Products. Is segregated into \"External Customer\" Defects and Internal defects.",
+          "iconUrl": "http://10.199.0.32/jira/images/site/defect.gif",
+          "name": "Defect",
+          "subtask": false
+        },
+        "customfield_19003": null,
+        "customfield_19400": null,
+        "customfield_19000": null,
+        "timespent": null,
+        "customfield_19001": null,
+        "project": {
+          "self": "http://10.199.0.32/jira/rest/api/2/project/32500",
+          "id": "32500",
+          "key": "QCGPP",
+          "name": "QCGPP12",
+          "avatarUrls": {
+            "48x48": "http://10.199.0.32/jira/secure/projectavatar?avatarId=47003",
+            "24x24": "http://10.199.0.32/jira/secure/projectavatar?size=small&avatarId=47003",
+            "16x16": "http://10.199.0.32/jira/secure/projectavatar?size=xsmall&avatarId=47003",
+            "32x32": "http://10.199.0.32/jira/secure/projectavatar?size=medium&avatarId=47003"
+          }
+        },
+        "customfield_13300": null,
+        "customfield_17500": "1|s1hj80:",
+        "customfield_13025": null,
+        "customfield_13302": null,
+        "customfield_11002": null,
+        "aggregatetimespent": null,
+        "customfield_11003": null,
+        "customfield_13301": "b_09",
+        "customfield_19403": null,
+        "customfield_11004": null,
+        "customfield_19800": null,
+        "customfield_13700": null,
+        "customfield_15601": null,
+        "customfield_10302": "Yes",
+        "customfield_12205": null,
+        "customfield_10700": null,
+        "customfield_14900": null,
+        "customfield_10703": null,
+        "resolutiondate": "2019-03-28T06:14:02.000+0000",
+        "workratio": 0,
+        "watches": {
+          "self": "http://10.199.0.32/jira/rest/api/2/issue/QCGPP-41299/watchers",
+          "watchCount": 0,
+          "isWatching": false
+        },
+        "customfield_18300": null,
+        "customfield_18301": null,
+        "customfield_16000": null,
+        "created": "2019-02-07T00:00:00.000+0000",
+        "customfield_12200": null,
+        "customfield_16400": null,
+        "customfield_14100": null,
+        "customfield_12202": null,
+        "customfield_16801": null,
+        "customfield_12201": null,
+        "customfield_16800": null,
+        "customfield_12204": null,
+        "customfield_18700": null,
+        "customfield_10300": null,
+        "customfield_12203": null,
+        "customfield_10301": null,
+        "customfield_13405": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/22003",
+          "value": "Development",
+          "id": "22003"
+        },
+        "customfield_11502": null,
+        "customfield_13800": null,
+        "customfield_13406": null,
+        "updated": "2019-03-29T15:31:03.000+0000",
+        "customfield_13081": null,
+        "customfield_13080": null,
+        "customfield_13082": null,
+        "customfield_19500": null,
+        "customfield_13085": null,
+        "customfield_19100": null,
+        "timeoriginalestimate": 0,
+        "customfield_13001": [
+          {
+            "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/84687",
+            "value": "4.6.GPP_SP",
+            "id": "84687"
+          }
+        ],
+        "customfield_15301": null,
+        "description": "<html>\r\n<body>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\"><b>Date</b></span><span style=\"font-size:8pt\">: 7th Feb .2019</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\"><b>Freeze Envm</b></span><span style=\"font-size:8pt\">: SPCITI_RUSSIA_IP1 </span></font><a href=\"http://splinux26.fundtech.isr:9812/gpp\" ><font face=\"Arial\" color=\"#0000ff\"><span style=\"font-size:8pt\"><u>http://splinux26.fundtech.isr:9812/gpp</u></span></font></a></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\"><b>Queue:</b></span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">Q_IN_CLEARNING</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">Q_IN_FEEDER</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">Q_AML_IN</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">Q_BI_RESPONSE</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">Q_IN_POST_RESPONSE</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"></div>\r\n<p style=\"margin-left:0mm; margin-right:0mm; text-indent:0mm; margin-top:2.36mm; margin-bottom:4.74mm; min-height: 2pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">-- </span></font><font face=\"Arial\" color=\"#333333\"><span style=\"font-size:8pt\"><b>Build </b></span></font><font face=\"Arial\"><span style=\"font-size:8pt\">4.6.10A.23.CITI_IP.01.50.03_b09&nbsp;</span></font></p>\r\n<p style=\"margin-left:0mm; margin-right:0mm; text-indent:0mm; margin-top:2.36mm; margin-bottom:4.74mm; min-height: 2pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">&nbsp;</span><span style=\"font-size:8pt\"><b>Test case#</b></span><span style=\"font-size:8pt\">:&nbsp; US95073_CitiRussia_CR4_HV_RTGS_Inward_Pacs.008_Payment_ISO_Field_Values_Edit</span></font></p>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\"><b>MID:</b></span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\"><b>Inward pacs.008: JB27810196VJ0A3I</b></span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\"><b>Steps:</b></span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">1. Drop a&nbsp; Inward Pacs008 RTGS in&nbsp; in Q_IN_CLEARNING queue.</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">2. Give positive response for 1st Wait_Comp status.</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">3. Give negative response for 2n Wait_Comp status.</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">4. Message should be move into Repair queue.</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">5. Edit the fields under Additional filter tab X fields and save it</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">6. Process the payment till complete.</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">6. Checkt the updated values are able to see on DB, FUNDT message and in UI.</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\"><b>Expected Result:</b></span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\"><b>&nbsp;</b></span><span style=\"font-size:8pt\">User should be able to Edit and see the updated values for the ISO fields (X fields) under Additional field tab.</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\"><b>Actual Result:</b></span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\"><b>1.</b></span><span style=\"font-size:8pt\">Timestamp value is not updated for Acceptance date time,Pooling Adjustment Date fields under Additional \r\ndetails section present under the additional field tab.</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"><font face=\"Arial\"><span style=\"font-size:8pt\">PFA for input file,screenshots.</span></font></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"></div>\r\n<div align=\"left\" style=\"min-height: 9pt; \"></div>\r\n</body>\r\n</html>",
+        "customfield_13000": null,
+        "customfield_17600": null,
+        "customfield_11100": null,
+        "customfield_15701": "Not started",
+        "customfield_19501": null,
+        "customfield_13400": null,
+        "customfield_15702": null,
+        "customfield_13403": null,
+        "customfield_15700": null,
+        "customfield_19900": null,
+        "customfield_12304": null,
+        "customfield_12700": null,
+        "customfield_10128": null,
+        "customfield_10129": null,
+        "customfield_10802": [
+          {
+            "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/84711",
+            "value": "Citi",
+            "id": "84711"
+          }
+        ],
+        "summary": "CitiRussia_CR4:US95073_CitiRussia_CR4_HV_RTGS_Inward_Pacs.008_Payment_ISO_Field_Values_Edit_updated values are not reflecting (X fields)  in the Additional details section under the additional fields tab on UI screen.",
+        "customfield_13072": null,
+        "customfield_13071": null,
+        "customfield_18400": null,
+        "customfield_13074": null,
+        "customfield_13073": null,
+        "customfield_16100": null,
+        "customfield_13076": null,
+        "customfield_13075": {
+          "self": "http://10.199.0.32/jira/rest/api/2/customFieldOption/22321",
+          "value": "T - Functional Testing",
+          "id": "22321"
+        },
+        "customfield_18000": null,
+        "customfield_13078": null,
+        "customfield_18801": null,
+        "customfield_10120": null,
+        "customfield_10121": null,
+        "customfield_14200": null,
+        "customfield_16901": null,
+        "customfield_16900": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10400": null,
+        "customfield_10004": "9223372036854775807",
+        "customfield_11600": null,
+        "environment": null,
+        "customfield_10117": null,
+        "customfield_11603": "0.0",
+        "customfield_10118": null,
+        "duedate": null
+      }
+    }
+  ]
+}

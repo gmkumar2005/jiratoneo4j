@@ -14,6 +14,7 @@ object Bgbug {
   implicit val jsonDecoder: Decoder[Bgbug] = deriveDecoder
 }
 
+
 case class Bgbug(
                   //    `_id`: String,
                   `Detected on Date`: String,

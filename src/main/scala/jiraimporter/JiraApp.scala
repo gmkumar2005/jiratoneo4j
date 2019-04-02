@@ -1,218 +1,230 @@
 package jiraimporter
 
-import akka.actor.{ActorSystem, Terminated}
-import akka.stream.ActorMaterializer
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import retry._
 import cats.data.EitherT
-import cats.instances.future.catsStdInstancesForFuture
-import com.sksamuel.elastic4s.ElasticsearchClientUri
-import scribe.writer.FileWriter
-import scribe.writer.file.LogPath
-//import com.sksamuel.elastic4s.http.ElasticDsl._
-//import com.sksamuel.elastic4s.ElasticApi._
-import com.sksamuel.elastic4s.http.{HttpClient, RequestFailure, RequestSuccess, SourceAsContentBuilder, get => _, search => _}
-import com.typesafe.config.{Config, ConfigFactory}
+import cats.effect._
+import cats.implicits._
 import io.circe.Json
+import io.circe.generic.auto._
+import javax.net.ssl.{SSLContext, TrustManager, X509TrustManager}
+import org.http4s.{AuthScheme, BasicCredentials, Credentials, Header, Headers, HttpVersion, Method, Request, Uri}
+import org.http4s.Status.{NotFound, Successful}
+import org.http4s.circe._
+import org.http4s.client.Client
+import org.http4s.client.blaze.{BlazeClientBuilder, BlazeClientConfig}
+import org.http4s.client.dsl.Http4sClientDsl
+import org.http4s.client.dsl.io._
+import org.http4s.client.middleware.{Logger, RequestLogger}
+import org.http4s.server.middleware.authentication.BasicAuth
+import org.joda.time.Minutes
+import org.slf4j.LoggerFactory
+// import org.http4s.client.dsl.io._
+
+import org.http4s.headers._
+// import org.http4s.headers._
+
+import org.http4s.MediaType
+// import org.http4s.MediaType
+
+import scala.concurrent.ExecutionContext.global
+import pureconfig._
+import pureconfig.generic.auto._
+import pureconfig.module.catseffect._
+import cats.effect.IO
+import pureconfig.error.ConfigReaderFailures
+import pureconfig.loadConfig
+import pureconfig._
+import pureconfig.generic.auto._
+import pureconfig.module.catseffect._
+import cats.effect.IO
+import org.http4s.Uri
+import cats._, cats.effect._, cats.implicits._, cats.data._
+import org.http4s.client.dsl.io._
+import org.http4s.client.dsl.Http4sClientDsl._
+import javax.net.ssl.{KeyManagerFactory, SSLContext, TrustManagerFactory}
 import io.circe.optics.JsonPath.root
 import io.circe.parser.parse
 import jiraimporter.BGBugDecoder.bgbugdecoder
-import play.api.libs.ws._
-import play.api.libs.ws.ahc._
-import scribe._
-import scribe.format._
-import com.sksamuel.elastic4s.http.ElasticDsl._
-import io.circe._
-import io.circe.generic.auto._
-import io.circe.parser._
-import io.circe.syntax._
-import io.circe.generic.extras.Configuration
-
-import scala.concurrent.ExecutionContext.Implicits._
-import scala.concurrent.Future
+import io.circe.Decoder, io.circe.generic.auto._
+import org.http4s.circe.CirceEntityDecoder._
+import cats.implicits._
 import scala.concurrent.duration._
+import scala.concurrent.duration.FiniteDuration
+import retry.RetryDetails._
+import cats.effect.Timer
+import retry.CatsEffect._
 
-object JiraApp extends Logging {
+import java.security.KeyStore
 
-  implicit val system: ActorSystem = ActorSystem()
-  val config: Config = ConfigFactory.load()
-  implicit val materializer: ActorMaterializer = ActorMaterializer()
-  val wsClient = StandaloneAhcWSClient()
-  implicit val configuration: Configuration = Configuration.default.withDefaults
+object ClientExample extends IOApp with Http4sClientDsl[IO] {
+  def logger = LoggerFactory.getLogger(this.getClass)
 
-  private val esIndex = config.getString("dhiNidhi.index")
-  private val elasticServer = config.getString("dhiNidhi.elasticServer")
-  private val elasticServerPort = config.getInt("dhiNidhi.elasticServerPort")
-  private val client = HttpClient(ElasticsearchClientUri(elasticServer, elasticServerPort))
+  val retryFiveTimes = RetryPolicies.limitRetries[IO](5)
+  val logMessages = collection.mutable.ArrayBuffer.empty[String]
+
+  def getSite(client: Client[IO]): IO[Unit] = IO {
+    //    implicit val jiraResponseDecoder = jsonOf[IO, JiraResponse]
+    import jiraimporter.BGBugDecoder.bgbugdecoder
+
+    val clientWithLoger = Logger[IO](logHeaders = true, logBody = true)(client)
+    val jiraServerConfig: IO[JiraServer] = loadConfigF[IO, JiraServer]("jira-server")
+    //    for (_ <- 1 to 2)
+    //      println(page.map(_.take(100)).unsafeRunSync()) // each execution of the effect will refetch the page!
+
+    // We can do much more: how about decoding some JSON to a scala object
+    // after matching based on the response status code?
+
+    val req3: Request[IO] = Request()
+
+    val data = for {
+      jc <- jiraServerConfig
+      page2 <- {
+        clientWithLoger.expect[JiraResponse](
+          req3
+            .withHeaders(Headers(Accept(MediaType.application.json), Authorization(BasicCredentials(jc.jiraUserName, jc.jiraPassword.value))))
+            .withMethod(Method.GET).withUri(Uri.fromString(jc.baseUrl + "/search").valueOr(throw _)
+            .withQueryParam("jql", "project=" + jc.jql)
+            .withQueryParam("startAt", 0)
+            .withQueryParam("maxResults", 1)
+          )
+        )
+      }
+    } yield page2
+
+    //    println(jiraServerConfig.unsafeRunSync())
+
+    //        for (_ <- 1 to 2)
 
 
-  system.registerOnTermination {
-    System.exit(0)
+    val totalJiraIssuesFound = data.unsafeRunSync().total
+
+    logger.error(" Total Issues found : " + totalJiraIssuesFound.toString)
+    //    logger.info("Second Call " + data.unsafeRunSync().take(100))
   }
 
 
-  def main(args: Array[String]): Unit = {
-    init
+  def getSite2(client: Client[IO]): IO[Unit] = IO {
+    logger.info("Starting IO")
 
-    val processJiraImport = for {
-      bglist <- processJiraRequest
-      esList <- EitherT(insertIntoEs(bglist))
-    } yield esList
+    val jiraServerConfig: IO[JiraServer] = loadConfigF[IO, JiraServer]("jira-server")
+    implicit val clientWithLoger = Logger[IO](logHeaders = true, logBody = false)(client)
+    //
+    val totalIssuesOntheServer = findIssueTotal(jiraServerConfig).unsafeRunSync()
+    logger.info(s"Total Issues found in jiraServer  : $totalIssuesOntheServer")
+    val bugsRange = List.range(0, totalIssuesOntheServer / 100 , 500)
 
-    processJiraImport.value.onComplete(result => {
-      logger.debug("Inserted " + result + " documents ")
-      shutdown(system, wsClient)
-    })
+    //    val allJiraIssues = bugsRange.map { (pageNo) => getBgBugs(jiraServerConfig, pageNo) }
+
+
+    val bugList = bugsRange.map(pageNo => getBgBugs(jiraServerConfig, pageNo))
+    val results = bugList.sequence
+
+    val issuesList = results.unsafeRunSync()
+    logger.error(" Total Issues in the response : " + issuesList.flatten.size)
+//    logger.error(" First Issue : " + issuesList.flatten.take(1))
   }
 
+  def getBgBugs(jiraServerConfig: IO[JiraServer], pageNo: Long)(implicit client: Client[IO]): IO[List[Issues]] = {
+    //    Thread.sleep(500)
+    logger.info("Processing pageNo :" + pageNo)
+//    val acceptHeader = Header("Accept-Encoding", "gzip")
+    val data = for {
+      jc <- jiraServerConfig
+      page2 <- {
+        client.expect[JiraResponse](
+          Request[IO]()
+            .withHeaders(Headers(Accept(MediaType.application.json), Authorization(BasicCredentials(jc.jiraUserName, jc.jiraPassword.value))))
+            .withMethod(Method.GET).withUri(Uri.fromString(jc.baseUrl + "/search").valueOr(throw _)
+            .withQueryParam("jql", jc.jql)
+            .withQueryParam("startAt", pageNo.toString)
+            .withQueryParam("maxResults", 500)
+          )
+        )
+      }
+    } yield page2.issues
 
-  def insertIntoEs(bgbugs: List[Bgbug]) = {
-  logger.info("Inserting into ESIndex " + esIndex)
-    val insertOps = bgbugs.map({ (bgbug) => indexInto(esIndex).doc(bgbug.asJson.noSpaces).withId(bgbug.`Defect ID`.toString) } )
-//    val insertOps = bgbugs.map({ (bgbug) => update(bgbug.`Defect ID`.toString).in("jiratest1" / "data").docAsUpsert(bgbug.asJson.noSpaces) } ).take(2)
-    client.execute(bulk(insertOps: _*)).map {
-      case Left(err) => Left[Error, String](Error.EsServerNoReachable("Error inserting document :" + elasticServer + "Message :" + err))
-      case Right(i) => Right[Error, String](i.result.items.toString())
-    }
+    val flakyRequestWithRetry: IO[List[Issues]] =
+      retryingOnAllErrors[List[Issues]](
+        policy = retryFiveTimes,
+        onError = logError
+      )(data)
 
+    flakyRequestWithRetry
   }
 
   def init: Unit = {
-//    val myFormatter: Formatter = formatter"[$threadName] $positionAbbreviated - $message$newLine"
-//    Logger.root.withHandler(formatter = myFormatter).replace()
-//    Logger("com.sksamuel.elastic4s").clearHandlers().clearModifiers().withHandler(minimumLevel = Some(Level.Debug)).replace()
-//    Logger().clearHandlers().clearModifiers().withHandler(minimumLevel = Some(Level.Debug)).replace()
-    Logger().clearHandlers().clearModifiers().withHandler(minimumLevel = Some(Level.Debug)).withHandler(writer = FileWriter().path(LogPath.daily())).replace()
-    logger.info("Starting ..")
+    //   val builder = BlazeClientBuilder[IO](global)
+    //    builder.withMaxTotalConnections(2)
   }
 
-  def runEs: EitherT[Future, Error, SearchResult] = {
-    val esAttempt = for {
-      esResponse <- EitherT(processEsRequests)
-    } yield esResponse
-    esAttempt.value.onComplete(result => {
-      logger.info(" ES Response processing ..")
-      val bgbugsCount = result.map({ l => l.map({ r => (r.bgBugs.size, r.totalHits) }) })
-      logger.debug("BgBugs :" + result)
-      logger.info("BgBugs found in elastic server " + bgbugsCount)
+  val getSSLContext: SSLContext = {
+    val permissiveTrustManager: TrustManager = new X509TrustManager() {
+      override def checkClientTrusted(chain: Array[X509Certificate], authType: String): Unit = {}
 
-      //      shutdown(system, wsClient)
-    })
+      override def checkServerTrusted(chain: Array[X509Certificate], authType: String): Unit = {}
 
-    esAttempt
-  }
-
-
-  def processEsRequests: Future[Either[Error, SearchResult]] = {
-    import BgbugReader.BgbugReader
-    val limit = 2
-
-    val query = search(esIndex) query "defect" limit {
-      limit
-    }
-    val resp = client.execute(query).map {
-      case Left(err) => Left[Error, SearchResult](Error.EsServerNoReachable("dhiNidhi.elasticServer :" + elasticServer + "Message :" + err))
-      case Right(i) => Right[Error, SearchResult](SearchResult(i.result.totalHits, i.result.to[Bgbug]))
-
+      override def getAcceptedIssuers(): Array[X509Certificate] = Array.empty
     }
 
-    resp
+    val ctx = SSLContext.getInstance("TLS")
+    ctx.init(Array.empty, Array(permissiveTrustManager), new SecureRandom())
+    ctx
   }
 
-  def processJiraRequest: EitherT[Future, Error, List[Bgbug]] = {
-    val jiraClient = fetchJiraIssues(wsClient) _
-    val attempt = for {
-      jiraresponse <- EitherT(jiraClient(config.getString("jiraServer.baseUrl"),
-        config.getString("jiraServer.jiraUserName"),
-        config.getString("jiraServer.jiraPassword")))
-      jiraJson <- EitherT(getIssuesFromJiraResponse(jiraresponse))
-      bgbugs <- EitherT(getBgBugs(jiraJson))
-    } yield bgbugs
-
-    attempt.value.onComplete(result => {
-
-      val convertedCount = result.map(l => l.map({ li => li.size }))
-
-      logger.info("Total bgbugs converted " + convertedCount)
-      logger.debug("Total bgbugs converted " + result)
-
-    })
-    attempt
-
+  def run(args: List[String]): IO[ExitCode] = {
+    init
+    BlazeClientBuilder[IO](global)
+      .withSslContext(getSSLContext)
+      //      .withMaxTotalConnections(2)
+      .withRequestTimeout(5.minutes)
+      .resource
+      .use(getSite2)
+      .as(ExitCode.Success)
   }
 
-  def fetchJiraIssues(wsClient: StandaloneWSClient)(jiraBaseUrl: String, jiraUserName: String, jiraPassword: String): Future[Either[Error, String]] = {
-    val request: StandaloneWSRequest = wsClient.url(jiraBaseUrl + "/search").withAuth(jiraUserName, jiraPassword, WSAuthScheme.BASIC)
-    val complexRequest: StandaloneWSRequest =
-      request.addHttpHeaders("Accept" -> "application/json")
-        .addHttpHeaders("Accept-Encoding" -> "gzip,deflate")
-        .addQueryStringParameters("jql" -> "project = FCS AND updated >= -1d")
-        .addQueryStringParameters("startAt" -> "0")
-        .addQueryStringParameters("maxResults" -> "500")
-//      .addQueryStringParameters(startAt=3&maxResults=5")
-        .withRequestFilter(AhcCurlRequestLogger())
-        .withRequestTimeout(90000.millis)
-
-    complexRequest.get().map(resp => resp.status match {
-      case 200 =>
-        logger.info("Recieving data from the jiraServer ...")
-        Right(resp.body)
-
-      case _ =>
-        logger.info("Unknown error resp.status " + resp.status)
-        Left(Error.JiraServerNoReachable("jiraBaseUrl :" + jiraBaseUrl + " Response : " + resp.body))
-
-    })
-  }
-
-
-  def getIssuesFromJiraResponse(result: String): Future[Either[Error, Json]] = {
-    Future {
-      parse(result) match {
-        case Right(value) => Right(value)
-        case Left(error) => Left(Error.JiraIssuesParsing(error.message))
+  def findIssueTotal(jiraServerConfig: IO[JiraServer])(implicit client: Client[IO]): IO[Long] = {
+    val data = for {
+      jc <- jiraServerConfig
+      page2 <- {
+        client.expect[JiraResponse](
+          Request[IO]()
+            .withHeaders(Headers(Accept(MediaType.application.json), Authorization(BasicCredentials(jc.jiraUserName, jc.jiraPassword.value))))
+            .withMethod(Method.GET).withUri(Uri.fromString(jc.baseUrl + "/search").valueOr(throw _)
+            .withQueryParam("jql", jc.jql)
+            .withQueryParam("startAt", 0)
+            .withQueryParam("maxResults", 1)
+          )
+        )
       }
-    }
+    } yield page2.total
+    data
   }
 
-  def getBgBugs(jiraJson: Json): Future[Either[Error, List[Bgbug]]] = {
-    val _total = root.total.int
-    val _issues = root.issues.each.json
-    val totalIssuesFound = _total.getOption(jiraJson)
-    logger.info("Total issues found " + totalIssuesFound.getOrElse(0))
-    Future {
-      val decodedBGBugs = _issues.getAll(jiraJson).map(x => x.as[Bgbug])
-      val validBgbugs = decodedBGBugs collect { case Right(f) => f }
-      val invalidBgBugs = decodedBGBugs collect { case Left(f) => f }
-      if (validBgbugs.size <= 0) {
-        Left[Error, List[Bgbug]](Error.JiraIssuesParsing("Zero issues converted " + _issues.getAll(jiraJson).map(x => x.as[Bgbug])))
-      } else if (validBgbugs.size < totalIssuesFound.getOrElse(0)) {
-        val bgsize = validBgbugs.size
-        logger.warn(s"Total converted issue $bgsize is less than TotalIssuesFound $totalIssuesFound")
-        logger.warn(s"Decoding failed issues \n" + invalidBgBugs)
-        Right[Error, List[Bgbug]](validBgbugs)
-      }
-      else {
-        Right[Error, List[Bgbug]](validBgbugs)
-      }
-    }
+  def logError(err: Throwable, details: RetryDetails): IO[Unit] = details match {
 
-  }
+    case WillDelayAndRetry(nextDelay: FiniteDuration,
+    retriesSoFar: Int,
+    cumulativeDelay: FiniteDuration) =>
+      IO {
+        logMessages.append(
+          s"Failed to download. So far we have retried $retriesSoFar times.")
+      }
 
-  def shutdown(system: ActorSystem, wsClient: StandaloneAhcWSClient): Future[Terminated] = {
-    logger.info("Shutdown initiated ...")
-    wsClient.close()
-    system.terminate()
+    case GivingUp(totalRetries: Int, totalDelay: FiniteDuration) =>
+      IO {
+        logMessages.append(s"Giving up after $totalRetries retries")
+      }
+
   }
 
 }
 
-sealed trait Error
-
-object Error {
-
-  final case class JiraServerNoReachable(baseUrl: String) extends Error
-
-  final case class EsServerNoReachable(esUrl: String) extends Error
-
-  final case class JiraIssuesParsing(msg: String) extends Error
-
+case class Sensitive(value: String) extends AnyVal {
+  override def toString: String = "MASKED"
 }
+
+case class JiraServer(baseUrl: String, jiraUserName: String, jiraPassword: Sensitive, jql: String)
+
+
