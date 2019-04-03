@@ -1,14 +1,18 @@
 package jiraimporter
 
+import java.io.{File, FileOutputStream, FileWriter}
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
+
 import retry._
 import cats.data.EitherT
 import cats.effect._
 import cats.implicits._
+import fs2.Stream
 import io.circe.Json
 import io.circe.generic.auto._
 import javax.net.ssl.{SSLContext, TrustManager, X509TrustManager}
+import jiraimporter.ClientExample.getJiraIssues
 import org.http4s.{AuthScheme, BasicCredentials, Credentials, Header, Headers, HttpVersion, Method, Request, Uri}
 import org.http4s.Status.{NotFound, Successful}
 import org.http4s.circe._
@@ -55,8 +59,14 @@ import scala.concurrent.duration.FiniteDuration
 import retry.RetryDetails._
 import cats.effect.Timer
 import retry.CatsEffect._
-
+import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
+import scala.language.implicitConversions
 import java.security.KeyStore
+import JiraResponse.JiraIssuesListToBgBug
+import JiraResponse.JiraIssuesToBgBug
+import java.nio.file.Paths
+import java.util.concurrent.Executors
+import scala.concurrent.ExecutionContext
 
 object ClientExample extends IOApp with Http4sClientDsl[IO] {
   def logger = LoggerFactory.getLogger(this.getClass)
@@ -65,16 +75,10 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
   val logMessages = collection.mutable.ArrayBuffer.empty[String]
 
   def getSite(client: Client[IO]): IO[Unit] = IO {
-    //    implicit val jiraResponseDecoder = jsonOf[IO, JiraResponse]
     import jiraimporter.BGBugDecoder.bgbugdecoder
 
     val clientWithLoger = Logger[IO](logHeaders = true, logBody = true)(client)
     val jiraServerConfig: IO[JiraServer] = loadConfigF[IO, JiraServer]("jira-server")
-    //    for (_ <- 1 to 2)
-    //      println(page.map(_.take(100)).unsafeRunSync()) // each execution of the effect will refetch the page!
-
-    // We can do much more: how about decoding some JSON to a scala object
-    // after matching based on the response status code?
 
     val req3: Request[IO] = Request()
 
@@ -93,9 +97,6 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
       }
     } yield page2
 
-    //    println(jiraServerConfig.unsafeRunSync())
-
-    //        for (_ <- 1 to 2)
 
 
     val totalJiraIssuesFound = data.unsafeRunSync().total
@@ -113,23 +114,58 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
     //
     val totalIssuesOntheServer = findIssueTotal(jiraServerConfig).unsafeRunSync()
     logger.info(s"Total Issues found in jiraServer  : $totalIssuesOntheServer")
-    val bugsRange = List.range(0, totalIssuesOntheServer / 100 , 500)
+    val bugsRange = List.range(0, totalIssuesOntheServer / 100, 500)
 
-    //    val allJiraIssues = bugsRange.map { (pageNo) => getBgBugs(jiraServerConfig, pageNo) }
+    //        val allJiraIssues = bugsRange.map { (pageNo) => getJiraIssues(jiraServerConfig, pageNo) }
 
 
-    val bugList = bugsRange.map(pageNo => getBgBugs(jiraServerConfig, pageNo))
-    val results = bugList.sequence
+    val bugList = bugsRange.map(pageNo => getJiraIssues(jiraServerConfig, pageNo))
+    val bulkInsertStatememt = bugList.map((jiraIssue) => putBgBugToES(jiraIssue))
+    //
+    val commands = bulkInsertStatememt.sequence
+    val bulkCommandString = commands.unsafeRunSync
 
-    val issuesList = results.unsafeRunSync()
-    logger.error(" Total Issues in the response : " + issuesList.flatten.size)
-//    logger.error(" First Issue : " + issuesList.flatten.take(1))
+    val fw = new FileWriter("escommands.txt", true)
+    bulkCommandString.map(fw.write(_))
+    fw.close()
+
+    logger.error("bulkInsertCommands : " + bulkCommandString.size)
+
+
+    //    val issuesList = results.unsafeRunSync()
+    //    logger.error(" Total Issues in the response : " + issuesList.flatten.size)
+    //    logger.error(" First Issue : " + issuesList.flatten.take(1))
+
   }
 
-  def getBgBugs(jiraServerConfig: IO[JiraServer], pageNo: Long)(implicit client: Client[IO]): IO[List[Issues]] = {
+  def generateESInsert(bgbug: Bgbug): String = {
+    val esIndex = Index("jiratest1", "data", bgbug.`Defect ID`.toString)
+    val index = ESBulkIndex(esIndex)
+    index.asJson.noSpaces + bgbug.asJson.noSpaces
+  }
+
+  def generateESInsertBulk(bgbugsList: List[Bgbug]): String = {
+    bgbugsList.map(generateESInsert(_)).mkString
+  }
+
+  def putBgBugToES(bgbugsList: IO[List[Issues]])(implicit client: Client[IO]): IO[String] = {
+
+    val esBulkInsertCommands = for {
+      bgbug <- bgbugsList
+      esInsertCommad <- IO {
+        generateESInsertBulk(bgbug)
+      }
+    } yield esInsertCommad
+
+    esBulkInsertCommands
+
+
+  }
+
+  def getJiraIssues(jiraServerConfig: IO[JiraServer], pageNo: Long)(implicit client: Client[IO]): IO[List[Issues]] = {
     //    Thread.sleep(500)
     logger.info("Processing pageNo :" + pageNo)
-//    val acceptHeader = Header("Accept-Encoding", "gzip")
+    //    val acceptHeader = Header("Accept-Encoding", "gzip")
     val data = for {
       jc <- jiraServerConfig
       page2 <- {
@@ -139,7 +175,7 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
             .withMethod(Method.GET).withUri(Uri.fromString(jc.baseUrl + "/search").valueOr(throw _)
             .withQueryParam("jql", jc.jql)
             .withQueryParam("startAt", pageNo.toString)
-            .withQueryParam("maxResults", 500)
+            .withQueryParam("maxResults", 50)
           )
         )
       }

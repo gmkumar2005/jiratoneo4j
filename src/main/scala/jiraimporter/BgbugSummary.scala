@@ -16,7 +16,7 @@ object Bgbug {
 
 
 case class Bgbug(
-                  //    `_id`: String,
+//                   `_id`: String,
                   `Detected on Date`: String,
                   `Modif_to_Reopen`: Option[String],
                   `Bucket`: Option[String],
@@ -43,7 +43,7 @@ case class Bgbug(
                   `ReTest Failed Counter`: Option[String],
                   `FRSD Type`: Option[String],
                   `Detected in time`: Option[String],
-                  `Defect ID`: Int,
+                  `Defect ID`: Long,
                   `View`: Option[String],
                   `Open_date`: Option[String],
                   `Number of 'ReOpen'`: Option[String],
