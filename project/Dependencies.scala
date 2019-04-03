@@ -6,7 +6,7 @@ object Dependencies {
   val catsVersion = "1.6.0"
   val catsEffectVersion = "1.2.0"
   val elastic4sVersion = "6.2.3"
-  val http4sVersion = "0.20.0-M6"
+  val http4sVersion = "0.20.0-M7"
   val catsRetryVersion = "0.2.5"
   val monocleVersion = "1.5.0"
   lazy val fs2Version = "0.9.7"

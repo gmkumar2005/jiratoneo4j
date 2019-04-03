@@ -59,5 +59,9 @@ class HelloSpec extends FlatSpec with Matchers {
     val actualResults = decodedStream.compile.toVector.attempt.unsafeRunSync().right.get(0).issues
 //    logger.info("Single insert request" + ClientExample.generateESInsert(actualResults.head))
     logger.info("bulk insert request" + ClientExample.generateESInsertBulk(actualResults))
+    logger.info("Long data " + 123132L.asJson.spaces2)
+    val responseString = """{"took":24,"errors":true,"items":[{"index":{"_index":"test","_type":"_doc","_id":"1","status":409,"error":{"type":"version_conflict_engine_exception","reason":"[_doc][3]: version conflict, PAXOS insert failed, document already exists","index_uuid":"uC_LjOGVTSWGo-w4IXOoaQ","shard":"0","index":"test"}}},{"delete":{"_index":"test","_type":"_doc","_id":"2","status":409,"error":{"type":"version_conflict_engine_exception","reason":"[_doc][3]: version conflict, PAXOS insert failed, document already exists","index_uuid":"uC_LjOGVTSWGo-w4IXOoaQ","shard":"0","index":"test"}}},{"create":{"_index":"test","_type":"_doc","_id":"3","status":409,"error":{"type":"version_conflict_engine_exception","reason":"[_doc][3]: version conflict, PAXOS insert failed, document already exists","index_uuid":"uC_LjOGVTSWGo-w4IXOoaQ","shard":"0","index":"test"}}},{"update":{"_index":"test","_type":"_doc","_id":"1","status":409,"error":{"type":"version_conflict_engine_exception","reason":"[_doc][3]: version conflict, PAXOS insert failed, document already exists","index_uuid":"uC_LjOGVTSWGo-w4IXOoaQ","shard":"0","index":"test"}}}]}"""
+
+    logger.info(" Decoded " + responseString.asJson)
   }
 }

@@ -178,7 +178,7 @@ object JiraResponse {
     None, //    `Previous Group`: Option[String],
     in.fields.flatMap(_.description), //    `Description`: Option[String],
     None, //    `Technical Component`: Option[String],
-    None, //    `Product/Project`: Option[String],
+    Some(in.fields.get.project.name), //    `Product/Project`: Option[String],
     None, //    `Testing Phase`: Option[String],
     None, //    `ReTest Failed Counter`: Option[String],
     None, //    `FRSD Type`: Option[String],
@@ -201,13 +201,13 @@ object JiraResponse {
     None, //    `NFR  Rejected by Fund`: Option[String],
     None, //    `Last Leg`: Option[String],
     None, //    `Product`: Option[String],
-    None, //    `Assigned To`: Option[String],
+    in.fields.flatMap(_.assignee.flatMap(_.emailAddress)), //    `Assigned To`: Option[String],
     in.fields.flatMap(_.summary), //    `Summary`: Option[String],
     None, //    `Close Counter External`: Option[String],
     None, //    `Developer (last)`: Option[String],
     None, //    `Severity`: Option[String],
     None, //    `Modified`: Option[String],
-    None, //    `Status`: Option[String],
+    in.fields.flatMap(_.status.map(_.name)), //    `Status`: Option[String],
     in.fields.flatMap(_.issuetype.map(_.name)), //    `Type`: Option[String],
     in.fields.flatMap(_.reporter.flatMap(_.emailAddress)), //    `Raised By`: Option[String],
     None, //    Suggested_Resolution: Option[String],
@@ -228,9 +228,35 @@ object JiraResponse {
 case class Index(
                   _index: String,
                   _type: String,
-                  _id: String
+                  _id: Long
                 )
 
 case class ESBulkIndex(
                         index: Index
                       )
+
+case class _shards(
+                    total: Double,
+                    successful: Double,
+                    failed: Double
+                  )
+
+case class _Index(
+                   _index: String,
+                   _type: String,
+                   _id: String,
+                   _version: Double,
+                   result: String,
+                   _shards: _shards,
+                   status: Double
+                 )
+
+case class Items(
+                  index: _Index
+                )
+
+case class ESResponse(
+                       took: Double,
+                       errors: Boolean,
+                       items: List[Items]
+                     )

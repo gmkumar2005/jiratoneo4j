@@ -73,11 +73,27 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
 
   val retryFiveTimes = RetryPolicies.limitRetries[IO](5)
   val logMessages = collection.mutable.ArrayBuffer.empty[String]
+  implicit val jiraServerConfig: IO[JiraServer] = loadConfigF[IO, JiraServer]("jira-server")
+  implicit val printer = Printer(
+    preserveOrder = true,
+    dropNullValues = true,
+    indent = " ",
+    lbraceRight = " ",
+    rbraceLeft = " ",
+    lbracketRight = "\n",
+    rbracketLeft = "\n",
+    lrbracketsEmpty = "\n",
+    arrayCommaRight = "\n",
+    objectCommaRight = " ",
+    colonLeft = " ",
+    colonRight = " "
+  )
+  val _maxResults = 500
 
   def getSite(client: Client[IO]): IO[Unit] = IO {
     import jiraimporter.BGBugDecoder.bgbugdecoder
 
-    val clientWithLoger = Logger[IO](logHeaders = true, logBody = true)(client)
+    val clientWithLoger = Logger[IO](logHeaders = true, logBody = false)(client)
     val jiraServerConfig: IO[JiraServer] = loadConfigF[IO, JiraServer]("jira-server")
 
     val req3: Request[IO] = Request()
@@ -98,7 +114,6 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
     } yield page2
 
 
-
     val totalJiraIssuesFound = data.unsafeRunSync().total
 
     logger.error(" Total Issues found : " + totalJiraIssuesFound.toString)
@@ -109,27 +124,30 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
   def getSite2(client: Client[IO]): IO[Unit] = IO {
     logger.info("Starting IO")
 
-    val jiraServerConfig: IO[JiraServer] = loadConfigF[IO, JiraServer]("jira-server")
+
     implicit val clientWithLoger = Logger[IO](logHeaders = true, logBody = false)(client)
     //
     val totalIssuesOntheServer = findIssueTotal(jiraServerConfig).unsafeRunSync()
     logger.info(s"Total Issues found in jiraServer  : $totalIssuesOntheServer")
-    val bugsRange = List.range(0, totalIssuesOntheServer / 100, 500)
+    val bugsRange = List.range(0, totalIssuesOntheServer, _maxResults)
 
     //        val allJiraIssues = bugsRange.map { (pageNo) => getJiraIssues(jiraServerConfig, pageNo) }
 
 
-    val bugList = bugsRange.map(pageNo => getJiraIssues(jiraServerConfig, pageNo))
-    val bulkInsertStatememt = bugList.map((jiraIssue) => putBgBugToES(jiraIssue))
+    val bugList = bugsRange.map(pageNo => getJiraIssues(pageNo))
+    val bulkInsertStatememt = bugList.map((jiraIssue) => getBgBugToESCommands(jiraIssue))
     //
-    val commands = bulkInsertStatememt.sequence
-    val bulkCommandString = commands.unsafeRunSync
+    val esbulkCommands = bulkInsertStatememt.map((command) => runESBulkCommands(command))
+    val esinsertResults = esbulkCommands.sequence.unsafeRunSync
 
-    val fw = new FileWriter("escommands.txt", true)
-    bulkCommandString.map(fw.write(_))
-    fw.close()
+    //    val bulkCommandString = bulkInsertStatememt.sequence.unsafeRunSync
+    //
+    //    val fw = new FileWriter("escommands.txt", true)
+    //    bulkCommandString.map(fw.write(_))
+    //
+    //    fw.close()
 
-    logger.error("bulkInsertCommands : " + bulkCommandString.size)
+    logger.error("Total items inserted in BULK  : " + esinsertResults.fold(0)(_ + _))
 
 
     //    val issuesList = results.unsafeRunSync()
@@ -138,17 +156,34 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
 
   }
 
+  def runESBulkCommands(command: IO[String])(implicit client: Client[IO]): IO[Int] = {
+    def defaultHeader: Header = Header("Content-Type", "application/json")
+
+    for {
+      cmd <- command
+      esResponse <- client.expect[ESResponse](
+        Request[IO]()
+          //          .withHeaders(Headers(defaultHeader))
+          .withHeaders(Headers(Accept(MediaType.text.plain)))
+          .withMethod(Method.POST)
+          .withUri(Uri.fromString("http://10.91.10.13:9200/_bulk").valueOr(throw _)
+          ).withEntity(cmd).withHeaders(defaultHeader, Accept(MediaType.text.plain))
+      )
+    } yield esResponse.items.size
+
+  }
+
   def generateESInsert(bgbug: Bgbug): String = {
-    val esIndex = Index("jiratest1", "data", bgbug.`Defect ID`.toString)
+    val esIndex = Index("jiratest1", "data", bgbug.`Defect ID`)
     val index = ESBulkIndex(esIndex)
-    index.asJson.noSpaces + bgbug.asJson.noSpaces
+    index.asJson.pretty(printer) + "\n" + bgbug.asJson.pretty(printer) + " \n"
   }
 
   def generateESInsertBulk(bgbugsList: List[Bgbug]): String = {
     bgbugsList.map(generateESInsert(_)).mkString
   }
 
-  def putBgBugToES(bgbugsList: IO[List[Issues]])(implicit client: Client[IO]): IO[String] = {
+  def getBgBugToESCommands(bgbugsList: IO[List[Issues]])(implicit client: Client[IO]): IO[String] = {
 
     val esBulkInsertCommands = for {
       bgbug <- bgbugsList
@@ -162,7 +197,7 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
 
   }
 
-  def getJiraIssues(jiraServerConfig: IO[JiraServer], pageNo: Long)(implicit client: Client[IO]): IO[List[Issues]] = {
+  def getJiraIssues(pageNo: Long)(implicit jiraServerConfig: IO[JiraServer], client: Client[IO]): IO[List[Issues]] = {
     //    Thread.sleep(500)
     logger.info("Processing pageNo :" + pageNo)
     //    val acceptHeader = Header("Accept-Encoding", "gzip")
@@ -174,8 +209,8 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
             .withHeaders(Headers(Accept(MediaType.application.json), Authorization(BasicCredentials(jc.jiraUserName, jc.jiraPassword.value))))
             .withMethod(Method.GET).withUri(Uri.fromString(jc.baseUrl + "/search").valueOr(throw _)
             .withQueryParam("jql", jc.jql)
-            .withQueryParam("startAt", pageNo.toString)
-            .withQueryParam("maxResults", 50)
+            .withQueryParam("startAt", pageNo)
+            .withQueryParam("maxResults", _maxResults)
           )
         )
       }
