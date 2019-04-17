@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 gmkumar2005
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
 import sbt._
 
 
@@ -15,10 +32,10 @@ object Dependencies {
   lazy val catsCore = "org.typelevel" %% "cats-core" % catsVersion
   lazy val catsEffect = "org.typelevel" %% "cats-effect" % catsEffectVersion
   //  lazy val scribe = "com.outr" %% "scribe" % "2.7.2"
-  lazy val macwire = "com.softwaremill.macwire" %% "macros" % "2.3.2" % "provided"
-  lazy val macwireAkka = "com.softwaremill.macwire" %% "macrosakka" % "2.3.2" % "provided"
-  lazy val macwireutil = "com.softwaremill.macwire" %% "util" % "2.3.2"
-  lazy val macwireproxy = "com.softwaremill.macwire" %% "proxy" % "2.3.2"
+//  lazy val macwire = "com.softwaremill.macwire" %% "macros" % "2.3.2" % "provided"
+//  lazy val macwireAkka = "com.softwaremill.macwire" %% "macrosakka" % "2.3.2" % "provided"
+//  lazy val macwireutil = "com.softwaremill.macwire" %% "util" % "2.3.2"
+//  lazy val macwireproxy = "com.softwaremill.macwire" %% "proxy" % "2.3.2"
   //  lazy val playws = "com.typesafe.play" %% "play-ahc-ws-standalone" % "2.0.2"
   lazy val circeCore = "io.circe" %% "circe-core" % circeVersion
   lazy val circeGeneric = "io.circe" %% "circe-generic" % circeVersion

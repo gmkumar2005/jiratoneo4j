@@ -1,3 +1,18 @@
+/*
+ * Copyright 2019 gmkumar2005
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package jiraimporter
 
@@ -155,73 +170,45 @@ case class JiraResponse(
 object JiraResponse {
 
 
-  implicit def JiraIssuesToBgBug(in: Issues): Bgbug = Bgbug(
+  implicit def jiraIssuesToBgBug(in: Issues): Bgbug = Bgbug(
     //
     in.fields.map(_.created.getOrElse("")).getOrElse(""), //    `Detected on Date`: String,
-    None, //    `Modif_to_Reopen`: Option[String],
-    None, //    `Bucket`: Option[String],
-    None, //    `Time_Stamp_New`: Option[String],
-    None, //    `Affected Fields`: Option[String],
-    None, //    `Actual Fix Time`: Option[String],
-    None, //    `Closing Date`: Option[String],
-    None, //    `Prior_Fixed`: Option[String],
-    Some(in.fields.get.project.name), //    `FRSD Name`: Option[String],
-    Some(in.fields.get.project.name), //    `Main Project`: Option[String],
-    in.fields.flatMap(_.summary), //    `Subject`: Option[String],
-    None, //    `Comments`: Option[String],
-    Some(in.fields.get.project.name), //    `Original Detected in Project`: Option[String],
-    None, //    `Delivery Date`: Option[String],
-    in.fields.flatMap(_.reporter.flatMap(_.emailAddress)), //    `Detected By`: Option[String],
-    None, //    `Close Counter Internal`: Option[String],
-    in.fields.flatMap(_.status.map(_.name)), //    `Sub Status`: Option[String],
-    None, //    `QA (last)`: Option[String],
-    None, //    `Previous Group`: Option[String],
-    in.fields.flatMap(_.description), //    `Description`: Option[String],
-    None, //    `Technical Component`: Option[String],
-    Some(in.fields.get.project.name), //    `Product/Project`: Option[String],
-    None, //    `Testing Phase`: Option[String],
-    None, //    `ReTest Failed Counter`: Option[String],
-    None, //    `FRSD Type`: Option[String],
-    None, //    `Detected in time`: Option[String],
-    in.id.toLong, //    `Defect ID`: Long,
-    None, //`View`: Option[String],
-    None, // `Open_date`: Option[String],
-    None, // `Number of 'ReOpen'`: Option[String],
-    Some(in.fields.get.project.name), // `Detected in Project`: Option[String],
-    in.fields.map(_.project.name), //    `Group`: Option[String],
-    None, //    `Customer`: Option[String],
-    in.fields.flatMap(_.priority.map(_.name)), //    `Priority`: Option[String],
-    None, //    `Is_Old`: Option[String],
-    None, //    `Prior Defect Status`: Option[String],
-    None, //    `Prevent Copy`: Option[String],
-    None, //    `Time_Stamp_Old`: Option[String],
-    None, //    `All Relevant Info Supplied`: Option[String],
-    None, //    `Check Field`: Option[String],
-    None, //    `Detected in Release`: Option[String],
-    None, //    `NFR  Rejected by Fund`: Option[String],
-    None, //    `Last Leg`: Option[String],
-    None, //    `Product`: Option[String],
-    in.fields.flatMap(_.assignee.flatMap(_.emailAddress)), //    `Assigned To`: Option[String],
-    in.fields.flatMap(_.summary), //    `Summary`: Option[String],
-    None, //    `Close Counter External`: Option[String],
-    None, //    `Developer (last)`: Option[String],
-    None, //    `Severity`: Option[String],
-    None, //    `Modified`: Option[String],
-    in.fields.flatMap(_.status.map(_.name)), //    `Status`: Option[String],
-    in.fields.flatMap(_.issuetype.map(_.name)), //    `Type`: Option[String],
-    in.fields.flatMap(_.reporter.flatMap(_.emailAddress)), //    `Raised By`: Option[String],
-    None, //    Suggested_Resolution: Option[String],
-    Some(in.key), //    `JiraKey`: Option[String],
-
-
+    None, /*    `Modif_to_Reopen`: Option[String],*/    None, /*    `Bucket`: Option[String],*/
+    None, /*    `Time_Stamp_New`: Option[String],*/    None, /*    `Affected Fields`: Option[String],*/
+    None, /*    `Actual Fix Time`: Option[String],*/    None, /*    `Closing Date`: Option[String],*/
+    None, /*    `Prior_Fixed`: Option[String],*/    Some(in.fields.get.project.name), /*    `FRSD Name`: Option[String],*/
+    Some(in.fields.get.project.name), /*    `Main Project`: Option[String],*/    in.fields.flatMap(_.summary), /*    `Subject`: Option[String],*/
+    None, /*    `Comments`: Option[String],*/    Some(in.fields.get.project.name), /*    `Original Detected in Project`: Option[String],*/
+    None, /*    `Delivery Date`: Option[String],*/    in.fields.flatMap(_.reporter.flatMap(_.emailAddress)), /*    `Detected By`: Option[String],*/
+    None, /*    `Close Counter Internal`: Option[String],*/    in.fields.flatMap(_.status.map(_.name)), /*    `Sub Status`: Option[String],*/
+    None, /*    `QA (last)`: Option[String],*/    None, /*    `Previous Group`: Option[String],*/
+    in.fields.flatMap(_.description), /*    `Description`: Option[String],*/    None, /*    `Technical Component`: Option[String],*/
+    Some(in.fields.get.project.name), /*    `Product/Project`: Option[String],*/    None, /*    `Testing Phase`: Option[String],*/
+    None, /*    `ReTest Failed Counter`: Option[String],*/    None, /*    `FRSD Type`: Option[String],*/
+    None, /*    `Detected in time`: Option[String],*/    in.id.toLong, /*    `Defect ID`: Long,*/
+    None, /*`View`: Option[String],*/    None, /* `Open_date`: Option[String],*/
+    None, /* `Number of 'ReOpen'`: Option[String],*/    Some(in.fields.get.project.name), /* `Detected in Project`: Option[String],*/
+    in.fields.map(_.project.name), /*    `Group`: Option[String],*/    None, /*    `Customer`: Option[String],*/
+    in.fields.flatMap(_.priority.map(_.name)), /*    `Priority`: Option[String],*/    None, /*    `Is_Old`: Option[String],*/
+    None, /*    `Prior Defect Status`: Option[String],*/    None, /*    `Prevent Copy`: Option[String],*/
+    None, /*    `Time_Stamp_Old`: Option[String],*/    None, /*    `All Relevant Info Supplied`: Option[String],*/
+    None, /*    `Check Field`: Option[String],*/    None, /*    `Detected in Release`: Option[String],*/
+    None, /*    `NFR  Rejected by Fund`: Option[String],*/    None, /*    `Last Leg`: Option[String],*/
+    None, /*    `Product`: Option[String],*/    in.fields.flatMap(_.assignee.flatMap(_.emailAddress)), /*    `Assigned To`: Option[String],*/
+    in.fields.flatMap(_.summary), /*    `Summary`: Option[String],*/    None, /*    `Close Counter External`: Option[String],*/
+    None, /*    `Developer (last)`: Option[String],*/    None, /*    `Severity`: Option[String],*/
+    None, /*    `Modified`: Option[String],*/    in.fields.flatMap(_.status.map(_.name)), /*    `Status`: Option[String],*/
+    in.fields.flatMap(_.issuetype.map(_.name)), /*    `Type`: Option[String],*/
+    in.fields.flatMap(_.reporter.flatMap(_.emailAddress)), /*    `Raised By`: Option[String],*/
+    None, /*    Suggested_Resolution: Option[String],*/    Some(in.key) /*    `JiraKey`: Option[String],*/
     //    Some(in.fields.get.fixVersions.get.mkString(",")),
     //    in.fields.map(_.fixVersions.mkString()),
 
 
   )
 
-  implicit def JiraIssuesListToBgBug(in: List[Issues]): List[Bgbug] = {
-    in.map(JiraIssuesToBgBug(_))
+  implicit def jiraIssuesListToBgBug(in: List[Issues]): List[Bgbug] = {
+    in.map(jiraIssuesToBgBug)
   }
 }
 
@@ -234,7 +221,7 @@ case class Index(
 case class ESBulkIndex(
                         index: Index
                       )
-
+// scalastyle:off class.name
 case class _shards(
                     total: Double,
                     successful: Double,

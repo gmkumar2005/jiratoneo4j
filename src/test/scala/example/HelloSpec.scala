@@ -22,8 +22,8 @@ class HelloSpec extends FlatSpec with Matchers {
 
   import java.nio.file.Paths
   import java.util.concurrent.Executors
-  import JiraResponse.JiraIssuesToBgBug
-  import JiraResponse.JiraIssuesListToBgBug
+  import JiraResponse.jiraIssuesToBgBug
+  import JiraResponse.jiraIssuesListToBgBug
   import scala.language.implicitConversions
 
   "The stream decoder" should "decode the jira defect" in {

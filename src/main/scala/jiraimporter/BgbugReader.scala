@@ -1,33 +1,40 @@
+/*
+ * Copyright 2019 gmkumar2005
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package jiraimporter
 
 import com.sksamuel.elastic4s.{Hit, HitReader}
 
 object BgbugReader {
+
   implicit object BgbugReader extends HitReader[Bgbug] {
     override def read(hit: Hit): Either[Throwable, Bgbug] = {
       Right(Bgbug(
-//        hit.id,
+        //        hit.id,
         hit.sourceAsMap.getOrElse("Detected on Date", "Empty").toString,
-        Some(hit.sourceAsMap.getOrElse("Modif_to_Reopen", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Bucket", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Time_Stamp_New", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Affected Fields", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Actual Fix Time", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Closing Date", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Prior_Fixed", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("FRSD Name", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Main Project", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Subject", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Comments", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Original Detected in Project", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Delivery Date", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Detected By", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Close Counter Internal", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Sub Status", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("QA (last)", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Previous Group", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Description", "Empty").toString),
-        Some(hit.sourceAsMap.getOrElse("Technical Component", "Empty").toString),
+        Some(hit.sourceAsMap.getOrElse("Modif_to_Reopen", "Empty").toString), Some(hit.sourceAsMap.getOrElse("Bucket", "Empty").toString),
+        Some(hit.sourceAsMap.getOrElse("Time_Stamp_New", "Empty").toString), Some(hit.sourceAsMap.getOrElse("Affected Fields", "Empty").toString),
+        Some(hit.sourceAsMap.getOrElse("Actual Fix Time", "Empty").toString), Some(hit.sourceAsMap.getOrElse("Closing Date", "Empty").toString),
+        Some(hit.sourceAsMap.getOrElse("Prior_Fixed", "Empty").toString), Some(hit.sourceAsMap.getOrElse("FRSD Name", "Empty").toString),
+        Some(hit.sourceAsMap.getOrElse("Main Project", "Empty").toString), Some(hit.sourceAsMap.getOrElse("Subject", "Empty").toString),
+        Some(hit.sourceAsMap.getOrElse("Comments", "Empty").toString), Some(hit.sourceAsMap.getOrElse("Original Detected in Project", "Empty").toString),
+        Some(hit.sourceAsMap.getOrElse("Delivery Date", "Empty").toString), Some(hit.sourceAsMap.getOrElse("Detected By", "Empty").toString),
+        Some(hit.sourceAsMap.getOrElse("Close Counter Internal", "Empty").toString), Some(hit.sourceAsMap.getOrElse("Sub Status", "Empty").toString),
+        Some(hit.sourceAsMap.getOrElse("QA (last)", "Empty").toString), Some(hit.sourceAsMap.getOrElse("Previous Group", "Empty").toString),
+        Some(hit.sourceAsMap.getOrElse("Description", "Empty").toString), Some(hit.sourceAsMap.getOrElse("Technical Component", "Empty").toString),
         Some(hit.sourceAsMap.getOrElse("Product/Project", "Empty").toString),
         Some(hit.sourceAsMap.getOrElse("Testing Phase", "Empty").toString),
         Some(hit.sourceAsMap.getOrElse("ReTest Failed Counter", "Empty").toString),
@@ -66,4 +73,5 @@ object BgbugReader {
       )
     }
   }
+
 }

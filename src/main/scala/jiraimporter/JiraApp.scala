@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 gmkumar2005
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package jiraimporter
 
 import java.io.{File, FileOutputStream, FileWriter}
@@ -62,16 +78,17 @@ import retry.CatsEffect._
 import io.circe._, io.circe.generic.auto._, io.circe.parser._, io.circe.syntax._
 import scala.language.implicitConversions
 import java.security.KeyStore
-import JiraResponse.JiraIssuesListToBgBug
-import JiraResponse.JiraIssuesToBgBug
+import JiraResponse.jiraIssuesListToBgBug
+import JiraResponse.jiraIssuesToBgBug
 import java.nio.file.Paths
 import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 
 object ClientExample extends IOApp with Http4sClientDsl[IO] {
-  def logger = LoggerFactory.getLogger(this.getClass)
+  val logger = LoggerFactory.getLogger(this.getClass)
 
-  val retryFiveTimes = RetryPolicies.limitRetries[IO](5)
+  val MAX_RETRIES = 5
+  val retryFiveTimes = RetryPolicies.limitRetries[IO](MAX_RETRIES)
   val logMessages = collection.mutable.ArrayBuffer.empty[String]
   implicit val jiraServerConfig: IO[JiraServer] = loadConfigF[IO, JiraServer]("jira-server")
   implicit val printer = Printer(
@@ -135,9 +152,9 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
 
 
     val bugList = bugsRange.map(pageNo => getJiraIssues(pageNo))
-    val bulkInsertStatememt = bugList.map((jiraIssue) => getBgBugToESCommands(jiraIssue))
+    val bulkInsertStatememt = bugList.map(jiraIssue => getBgBugToESCommands(jiraIssue))
     //
-    val esbulkCommands = bulkInsertStatememt.map((command) => runESBulkCommands(command))
+    val esbulkCommands = bulkInsertStatememt.map(command => runESBulkCommands(command))
     val esinsertResults = esbulkCommands.sequence.unsafeRunSync
 
     //    val bulkCommandString = bulkInsertStatememt.sequence.unsafeRunSync
@@ -147,7 +164,7 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
     //
     //    fw.close()
 
-    logger.error("Total items inserted in BULK  : " + esinsertResults.fold(0)(_ + _))
+    logger.error("Total items inserted in BULK  : " + esinsertResults.sum)
 
 
     //    val issuesList = results.unsafeRunSync()
@@ -180,7 +197,7 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
   }
 
   def generateESInsertBulk(bgbugsList: List[Bgbug]): String = {
-    bgbugsList.map(generateESInsert(_)).mkString
+    bgbugsList.map(generateESInsert).mkString
   }
 
   def getBgBugToESCommands(bgbugsList: IO[List[Issues]])(implicit client: Client[IO]): IO[String] = {
@@ -225,18 +242,13 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
     flakyRequestWithRetry
   }
 
-  def init: Unit = {
-    //   val builder = BlazeClientBuilder[IO](global)
-    //    builder.withMaxTotalConnections(2)
-  }
-
   val getSSLContext: SSLContext = {
     val permissiveTrustManager: TrustManager = new X509TrustManager() {
       override def checkClientTrusted(chain: Array[X509Certificate], authType: String): Unit = {}
 
       override def checkServerTrusted(chain: Array[X509Certificate], authType: String): Unit = {}
 
-      override def getAcceptedIssuers(): Array[X509Certificate] = Array.empty
+      override def getAcceptedIssuers: Array[X509Certificate] = Array.empty
     }
 
     val ctx = SSLContext.getInstance("TLS")
@@ -245,7 +257,6 @@ object ClientExample extends IOApp with Http4sClientDsl[IO] {
   }
 
   def run(args: List[String]): IO[ExitCode] = {
-    init
     BlazeClientBuilder[IO](global)
       .withSslContext(getSSLContext)
       //      .withMaxTotalConnections(2)
